@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>JSON-stat Javascript Toolkit / Test Suite</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="description" content="JSON-stat.org Test Suite allows you to check the JSON-stat JavaScript Toolkit in your browser." />
+		<meta name="keywords" content="test, suite, testsuite, library, samples, JSON, statistics, stats, data, metadata, exchange, rest, api, javascript, js, apps, mobile, opendata" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="me" href="http://xavierbadosa.com/" />
+		<script src="https://cdn.jsdelivr.net/combine/npm/jquery@3.2.1,npm/jsonstat-toolkit@1.0.6"></script>
+		<script src="../iife.js"></script>
+	</head>
+	<body>
+		<h1>JSON-stat Javascript Utilities Suite <span id="version"></span></h1>
+		<main>Connecting...</main>
+
+		<script>
+		function test(sdmx){
+			var
+				d=document,
+				dl=JSONstatUtils.datalist(
+  				JSONstat( JSONstatUtils.fromSDMX(sdmx) ),
+  				{
+  					counter: true,
+  					tblclass: "datalist",
+  					numclass: "number",
+  					valclass: "value",
+  					vlabel: "VALUE"
+  				}
+        )
+      ;
+
+      d.getElementById("version").innerHTML=JSONstatUtils.version;
+      d.getElementsByTagName("main")[0].innerHTML=dl;
+    }
+
+		$.getJSON(
+			"https://stats.oecd.org/SDMX-JSON/data/PDB_GR/USA+EU28.T_HRSPOP.GRW/all?startTime=1998&dimensionAtObservation=allDimensions",
+			test
+		);
+
+		</script>
+
+		<noscript>Errrrr... This is embarassing... This page needs Javascript to work.</noscript>
+		<address><a href="https://jsonstat.com">jsonstat.com</a> | &copy; 2019 <a href="https://xavierbadosa.com">Xavier Badosa</a></address>
+	</body>
+</html>

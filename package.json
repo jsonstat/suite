@@ -1,0 +1,49 @@
+{
+	"name": "jsonstat-suite",
+	"version": "3.0.0",
+	"description": "A library of high level functions built on top of the JSON-stat Javascript Toolkit (JJT)",
+	"homepage": "https://jsonstat.com",
+	"keywords": [
+		"util",
+		"jsonstat",
+		"jsonstat-toolkit",
+		"jsonstat-utils",
+		"stats",
+		"data",
+		"cube",
+		"opendata",
+		"csv",
+		"table",
+		"join",
+		"sdmx",
+		"sdmx-json"
+	],
+	"author": {
+		"name": "Xavier Badosa",
+		"url": "https://xavierbadosa.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jsonstat/suite.git"
+	},
+	"main": "main.cjs",
+	"module": "module.mjs",
+	"unpkg": "iife.js",
+	"jsdelivr": "iife.js",
+	"scripts": {
+		"build": "rollup -c"
+	},
+	"dependencies": {
+		"jsonstat-toolkit": "^1.0.7"
+	},
+	"devDependencies": {
+		"rollup": "^1.27.1",
+		"@rollup/plugin-json": "^4.0.0",
+		"@rollup/plugin-replace": "^2.2.1",
+		"rollup-plugin-terser": "^5.1.2"
+	},
+	"license": "Apache-2.0",
+	"files": [
+		"*.@(js|cjs|mjs)"
+	]
+}
