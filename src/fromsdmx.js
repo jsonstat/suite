@@ -1,4 +1,4 @@
-__TOOLKIT__
+import JSONstat from "jsonstat-toolkit";
 
 //SDMX-JSON flat flavor
 //Options (ovalue, ostatus, instance). IE support requires polyfills for reduce, find and findIndex

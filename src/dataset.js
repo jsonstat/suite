@@ -1,4 +1,4 @@
-__TOOLKIT__
+import JSONstat from "jsonstat-toolkit";
 
 export default function dataset(j, dsid){
 	if(typeof j==="undefined" || j===null){

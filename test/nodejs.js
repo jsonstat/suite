@@ -1,5 +1,5 @@
 var
-  JSONstatUtils=require("jsonstat-suite"),//"../main.cjs"
+  JSONstatUtils=require("../main.cjs"),
   https=require("https"),
   url="https://stats.oecd.org/SDMX-JSON/data/LFS_SEXAGE_I_R/DNK+FIN+NOR.MW.900000.UR.A/all?startTime=2010&dimensionAtObservation=allDimensions",
   main=function(sdmx){

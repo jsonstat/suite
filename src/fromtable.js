@@ -1,4 +1,4 @@
-__TOOLKIT__
+import JSONstat from "jsonstat-toolkit";
 
 //o object p property
 function arr2obj(o,p){

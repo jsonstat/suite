@@ -1,4 +1,4 @@
-__TOOLKIT__
+import JSONstat from "jsonstat-toolkit";
 
 export default function join(arrobj, options){
 	if(typeof arrobj==="undefined" || !Array.isArray(arrobj)){
