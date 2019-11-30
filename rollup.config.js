@@ -55,14 +55,14 @@ export default [
   },
   {
     input: "./src/index.js",
-    external: ["node-fetch"],
+    external: ["stream", "http", "url", "https", "zlib"],
     output: {
       file: "import.mjs",
-      format: "esm"
+      format: "esm",
     },
     plugins: [
       replace({__IE__: ''}),
-      resolve(),
+      resolve({preferBuiltins: true}),
       ...plugins
     ]
   }
