@@ -1,7 +1,7 @@
 import json from '@rollup/plugin-json';
 import replace from '@rollup/plugin-replace';
 import {terser} from "rollup-plugin-terser";
-import resolve from 'rollup-plugin-node-resolve'
+import resolve from 'rollup-plugin-node-resolve';
 import * as pkg from "./package.json";
 
 const
@@ -55,14 +55,13 @@ export default [
   },
   {
     input: "./src/index.js",
-    external: ["stream", "http", "url", "https", "zlib"],
     output: {
       file: "import.mjs",
       format: "esm",
     },
     plugins: [
       replace({__IE__: ''}),
-      resolve({preferBuiltins: true}),
+      resolve({mainFields: ["browser"]}),
       ...plugins
     ]
   }
