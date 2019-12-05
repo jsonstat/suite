@@ -8,7 +8,7 @@
 
 ### Script tag
 
-<strong>jsonstat-suite</strong> is built on top of <strong>jsonstat-tools</strong>. Copy the latest version of the [jsonstat-toolkit code](https://raw.githubusercontent.com/jsonstat/toolkit/master/iife.js) and the latest version of the [jsonstat-suite code](https://raw.githubusercontent.com/jsonstat/suite/master/iife.js) to your server and use script tags in your webpage to link to them. Both are also available from several CDNs ([unpkg](https://unpkg.com), [jsDelivr](https://www.jsdelivr.com/)):
+<strong>jsonstat-suite</strong> is built on top of <strong>jsonstat-toolkit</strong>. Copy the latest version of the [jsonstat-toolkit code](https://raw.githubusercontent.com/jsonstat/toolkit/master/iife.js) and the latest version of the [jsonstat-suite code](https://raw.githubusercontent.com/jsonstat/suite/master/iife.js) to your server and use script tags in your webpage to link to them. Both are also available from several CDNs ([unpkg](https://unpkg.com), [jsDelivr](https://www.jsdelivr.com/)):
 
 ```html
 <script src="https://unpkg.com/jsonstat-toolkit@1.0.8"></script>
