@@ -39,7 +39,7 @@ var csv=JSONstatUtils.toCSV( {
 } );
 ```
 
-or a *jsonstat* instance (the result of a JSON-stat object processed by [jsonstat-toolkit](https://www.npmjs.com/package/jsonstat-toolkit)),
+or a *jsonstat* instance (the result of a JSON-stat object processed by [jsonstat-toolkit](https://www.npmjs.com/package/jsonstat-toolkit)).
 
 ```js
 var
@@ -53,14 +53,6 @@ var
   csv=JSONstatUtils.toCSV( JSONstat( jsonstat ) )
 ;
 ```
-
-or a string representing a URL
-
-```js
-var csv=JSONstatUtils.toCSV( "https://json-stat.org/samples/canada.json" );
-```
-
-This is practical (for demo purposes) but not recommended because it requires the use of a synchronous XMLHttpRequest, which is deprecated.
 
 ### options (object)
 
