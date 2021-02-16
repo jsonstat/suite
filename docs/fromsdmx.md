@@ -1,5 +1,3 @@
-PENDING: works on IE, option to convert
-
 # fromSDMX
 
 > Converts an object in the SDMX-JSON format to the JSON-stat dataset format.
