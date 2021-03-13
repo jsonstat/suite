@@ -274,7 +274,7 @@ export default function tbrowser(jsonstat, selector, options){
 			:
 			//If browser does not support toLocaleString, locale is ignored, sorry.
 			function(v, d){
-				//If no decimal information, analyze all data for every metric and infer decimals? Not for the moment.
+				//If no decimal information, analyze all data for every metric and infer decimals? Not for the moment
 				return (d===null) ? v : v.toFixed(d);
 			}
 		;
@@ -342,7 +342,7 @@ export default function tbrowser(jsonstat, selector, options){
 			foot='<tfoot><tr><td colspan="'+(cid.length+1)+'">'+source+"</td></tr></tfoot>";
 		}
 
-		element.innerHTML='<table class="'+tblclass+'">'+caption+head+foot+body+"</table>";
+		element.innerHTML='<table class="'+tblclass+'">'+caption+head+body+foot+"</table>";
 
 		[].slice.call(element.querySelectorAll("select")).forEach(function(e){
 			e.addEventListener("change", function(event) {

@@ -13,7 +13,8 @@ export default function datalist(jsonstat, options){
 	}
 
 	var
-		trs="",
+		thead="",
+		tbody="",
 		tfoot="",
 		ncols=0,
 		na=options.na || "n/a", //for empty cells in the resulting datalist table
@@ -28,46 +29,88 @@ export default function datalist(jsonstat, options){
 		locale=options.locale || "en-US",
 		source=options.source || "Source",
 		ds=dataset(jsonstat, dsid),
+		metricvalue=ds.id.indexOf(ds.role.metric[0]),//aqi malament
+		metric=ds.Dimension({ role : "metric"} )[0],//aqi malament
+		decs={},
 
-		format=(Number.toLocaleString) ?
-			function(n){
-				return n.toLocaleString(locale);
+		//If no decimal information, analyze all data for every metric and infer decimals? Not for the moment.
+		format=(Number.toLocaleString && locale!=="none") ?
+			function(v, d){
+				//toLocaleString because has better support than new Intl.NumberFormat(locale, { minimumFractionDigits: d }).format(v)
+				return (d===null) ?
+					v.toLocaleString(locale)
+					:
+					v.toLocaleString(locale, {minimumFractionDigits: d, maximumFractionDigits: d})
+				;
 			}
 			:
-			function(n){
-				return n;
-			},
+			//If browser does not support toLocaleString, locale is ignored, sorry.
+			function(v, d){
+				//If no decimal information, analyze all data for every metric and infer decimals? Not for the moment.
+				return (d===null) ? v : v.toFixed(d);
+			}
+		,
+		tcols=function(r,i){
+			var decimals=null;
+			r.forEach(function(e,c){
+				var
+					cls=(colvalue===c) ? ' class="'+numclass+" "+valclass+'"' : '',
+					val=na
+				;
+
+				if(i){
+					if(metricvalue===c){
+						decimals=decs[e];
+					}
+					if(e!==null){
+						val=(colvalue===c) ? format(e, decimals) : e;
+					}
+
+					tbody+='<td'+cls+'>'+val+'</td>';
+				}else{
+					thead+='<th'+cls+'>'+e+'</th>';
+				}
+			});
+		},
 
 		trows=(counter) ?
 			function(r,i){
-				trs+=(i) ? '<tr><td class="'+numclass+'">'+i+'</td>' : '<tr><th class="'+numclass+'">#</th>';
-				r.forEach(function(e,c){
-					var
-						cls=(colvalue===c) ? ' class="'+numclass+" "+valclass+'"' : '',
-						val=(e===null) ? na : format(e)
-					;
+				tbody+="<tr>";
+				thead+="<tr>";
 
-					trs+=(i) ? '<td'+cls+'>'+val+'</td>' : '<th'+cls+'>'+val+'</th>';
-				});
-				trs+="</tr>";
+				if(i){
+					tbody+='<td class="'+numclass+'">'+i+'</td>';
+				}else{
+					thead+='<th class="'+numclass+'">#</th>';
+				}
+
+				tcols(r,i);
+
+				tbody+="</tr>";
+				thead+="</tr>";
 			}
 			:
 			function(r,i){
-				trs+='<tr>';
-				r.forEach(function(e,c){
-					var
-						cls=(colvalue===c) ? ' class="'+numclass+" "+valclass+'"' : '',
-						val=(e===null) ? na : format(e)
-					;
+				tbody+="<tr>";
+				thead+="<tr>";
 
-					trs+=(i) ? '<td'+cls+'>'+val+'</td>' : '<th'+cls+'>'+val+'</th>';
-				});
-				trs+="</tr>";
+				tcols(r,i);
+
+				tbody+="</tr>";
+				thead+="</tr>";
 			}
 	;
 
 	if(!checkds(ds)){
 		return null;
+	}
+
+	if(metric){
+		metric.Category().forEach(function(e){
+			//e.unit is always defined (null or object)
+			var decimals=e.unit && e.unit.hasOwnProperty("decimals") ? e.unit.decimals : null;
+			decs[e.label]=decimals;
+		});
 	}
 
 	var
@@ -92,5 +135,5 @@ export default function datalist(jsonstat, options){
 		tfoot='<tfoot><td colspan="'+ncols+'">'+source+'</td></tfoot>';
 	}
 
-	return '<table class="'+tblclass+'"><caption>'+(options.caption || ds.label || "")+'</caption>'+tfoot+'<tbody>'+trs+"</tbody></table>";
+	return '<table class="'+tblclass+'"><caption>'+(options.caption || ds.label || "")+'</caption>'+'<thead>'+thead+'</thead><tbody>'+tbody+'</tbody>'+tfoot+'</table>';
 }
