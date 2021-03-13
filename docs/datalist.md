@@ -96,7 +96,7 @@ It is the HTML class attribute of *th* and *td* elements in numeric columns (val
 
 #### locale (string)
 
-A string identifying a language according to [BCP 47](http://tools.ietf.org/html/rfc5646) to be used to format values. It will only be used if the browser supports Number.toLocaleString(). By default, "en-US". You can specified "none" if you do not want Number.toLocaleString() to be applied.
+A string identifying a language according to [BCP 47](http://tools.ietf.org/html/rfc5646) to be used to format values. It will only be used if the browser supports Number.toLocaleString(). By default, "en-US". You can specify "none" if you do not want Number.toLocaleString() to be applied.
 
 #### dsid (positive integer or string)
 
