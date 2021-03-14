@@ -29,8 +29,8 @@ export default function datalist(jsonstat, options){
 		locale=options.locale || "en-US",
 		source=options.source || "Source",
 		ds=dataset(jsonstat, dsid),
-		metricvalue=ds.id.indexOf(ds.role.metric[0]),//aqi malament
-		metric=ds.Dimension({ role : "metric"} )[0],//aqi malament
+		colmetric=ds.role.metric ? ds.id.indexOf(ds.role.metric[0]) : null,
+		metric=ds.Dimension({ role : "metric"} ),
 		decs={},
 
 		//If no decimal information, analyze all data for every metric and infer decimals? Not for the moment.
@@ -59,7 +59,7 @@ export default function datalist(jsonstat, options){
 				;
 
 				if(i){
-					if(metricvalue===c){
+					if(colmetric===c){
 						decimals=decs[e];
 					}
 					if(e!==null){
@@ -106,7 +106,7 @@ export default function datalist(jsonstat, options){
 	}
 
 	if(metric){
-		metric.Category().forEach(function(e){
+		metric[0].Category().forEach(function(e){
 			//e.unit is always defined (null or object)
 			var decimals=e.unit && e.unit.hasOwnProperty("decimals") ? e.unit.decimals : null;
 			decs[e.label]=decimals;
