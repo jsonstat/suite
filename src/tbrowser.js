@@ -262,7 +262,7 @@ export default function tbrowser(jsonstat, selector, options){
 		body+="<tbody>";
 
 		//If no decimal information, analyze all data for every metric and infer decimals? Not for the moment.
-		var format=(Number.toLocaleString) ?
+		var format=(Number.toLocaleString && locale!=="none") ?
 			function(v, d){
 				//toLocaleString because has better support than new Intl.NumberFormat(locale, { minimumFractionDigits: d }).format(v)
 				return (d===null) ?

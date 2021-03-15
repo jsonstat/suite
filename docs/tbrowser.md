@@ -103,7 +103,7 @@ It is an object with the following internationalization properties:
 
 ##### locale (string)
 
-A string identifying a language according to [BCP 47](http://tools.ietf.org/html/rfc5646) to be used to format values. It will only be used if the browser supports Number.toLocaleString( locales ). By default, "en-US".
+A string identifying a language according to [BCP 47](http://tools.ietf.org/html/rfc5646) to be used to format values. It will only be used if the browser supports Number.toLocaleString(). By default, "en-US". You can specify "none" if you do not want Number.toLocaleString() to be applied.
 
 ##### msgs (object)
 
