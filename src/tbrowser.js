@@ -294,7 +294,8 @@ export default function tbrowser(jsonstat, selector, options){
 							dec( cols.Category(i) )
 					;
 
-					if(col.value!==null){
+					//fromSDMX can return undefined
+					if(typeof col.value!=="undefined" && col.value!==null){
 						val=format(col.value, decimals);
 
 						if(shstatus && col.status!==null){
