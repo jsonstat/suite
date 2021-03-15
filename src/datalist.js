@@ -29,7 +29,7 @@ export default function datalist(jsonstat, options){
 		locale=options.locale || "en-US",
 		source=options.source || "Source",
 		ds=dataset(jsonstat, dsid),
-		colmetric=ds.role.metric ? ds.id.indexOf(ds.role.metric[0]) : null,
+		colmetric=ds.role && ds.role.metric ? ds.id.indexOf(ds.role.metric[0]) : null,
 		metric=ds.Dimension({ role : "metric"} ),
 		decs={},
 
