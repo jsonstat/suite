@@ -12,11 +12,11 @@
 
 ```html
 <script src="https://unpkg.com/jsonstat-toolkit@1.2.5"></script>
-<script src="https://unpkg.com/jsonstat-suite@3.1.1"></script>
+<script src="https://unpkg.com/jsonstat-suite@3.1.5"></script>
 ```
 
 ```html
-<script src="https://cdn.jsdelivr.net/combine/npm/jsonstat-toolkit@1.2.5,npm/jsonstat-suite@3.1.1"></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/jsonstat-toolkit@1.2.5,npm/jsonstat-suite@3.1.5"></script>
 ```
 
 The Suite works on any modern browser. The oldest browser supported is Internet Explorer 9.
@@ -27,13 +27,13 @@ Very modern browsers support ECMAScript modules. Copy the latest version of the 
 
 ```html
 <script type="module">
-import * as JSONstatUtils from "https://cdn.jsdelivr.net/npm/jsonstat-suite@3.1.1/import.mjs";
+import * as JSONstatUtils from "https://cdn.jsdelivr.net/npm/jsonstat-suite@3.1.5/import.mjs";
 </script>
 ```
 
 ```html
 <script type="module">
-import * as JSONstatUtils from "https://unpkg.com/jsonstat-suite@3.1.1/import.mjs";
+import * as JSONstatUtils from "https://unpkg.com/jsonstat-suite@3.1.5/import.mjs";
 </script>
 ```
 
@@ -63,5 +63,5 @@ The safest way to load the jsonstat-toolkit in [Observable](https://observablehq
 
 ```js
 JSONstat = require('jsonstat-toolkit@1.2.5').catch(() => window["JSONstat"])
-JSONstatUtils = import('jsonstat-suite@3.1.1/import.mjs')
+JSONstatUtils = import('jsonstat-suite@3.1.5/import.mjs')
 ```
