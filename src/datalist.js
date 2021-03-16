@@ -62,8 +62,8 @@ export default function datalist(jsonstat, options){
 					if(colmetric===c){
 						decimals=decs[e];
 					}
-					//fromSDMX can return undefined 
-					if(typeof e!=="undefined" && e!==null){
+					//fromSDMX can return undefined (not anymore since 3.1.5)
+					if(/*3.1.5 typeof e!=="undefined" &&*/ e!==null){
 						val=(colvalue===c) ? format(e, decimals) : e;
 					}
 

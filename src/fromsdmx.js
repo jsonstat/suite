@@ -53,6 +53,7 @@ export default function fromSDMX(sdmx, options){
 	__IE__
 
 	var
+		length=1,
 		id=[],
 		size=[],
 		dimension={},
@@ -94,6 +95,7 @@ export default function fromSDMX(sdmx, options){
 
 			id.push(o.id);
 			size.push(o.values.length);
+			length*=o.values.length;
 
 			var cat=dimension[o.id].category;
 			o.values.forEach(function(v){
@@ -130,17 +132,20 @@ export default function fromSDMX(sdmx, options){
 	}
 
 	//Void dataset
-	var stat={
-		version: "2.0",
-		class: "dataset",
-		updated: sdmx.header.prepared || null, //Not exactly the same thing... but publicationYear and publicationPeriod usually missing
-		source: sdmx.header.sender.name || null, //Not exactly the same thing...
-		label: meta.name || null,
-		id: id,
-		size: size,
-		dimension: dimension,
-		value: options.ovalue ? {} : []
-	};
+	var
+		value=new Array(length),
+		stat={
+			version: "2.0",
+			class: "dataset",
+			updated: sdmx.header.prepared || null, //Not exactly the same thing... but publicationYear and publicationPeriod usually missing
+			source: sdmx.header.sender.name || null, //Not exactly the same thing...
+			label: meta.name || null,
+			id: id,
+			size: size,
+			dimension: dimension,
+			value: options.ovalue ? {} : value.fill(null)
+		}
+	;
 
 	if(self){
 		stat.link={
@@ -199,6 +204,7 @@ export default function fromSDMX(sdmx, options){
 		assignStatus();
 	}
 
+	/*3.1.5
 	//When array, padding with nulls if last values/status not set
 	var k;
 	if(!options.ovalue){
@@ -211,6 +217,7 @@ export default function fromSDMX(sdmx, options){
 			stat.status.push(null);
 		}
 	}
+	*/
 
 	return options.instance ? JSONstat(stat) : stat;
 }
