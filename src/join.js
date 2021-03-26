@@ -1,4 +1,5 @@
 import JSONstat from "jsonstat-toolkit";
+import fromTable from "./fromtable.js";
 
 export default function join(arrobj, options){
 	if(typeof arrobj==="undefined" || !Array.isArray(arrobj)){
