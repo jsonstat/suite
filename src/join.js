@@ -46,7 +46,17 @@ export default function join(arrobj, options){
 	//Join by dimension
 	var
 		index, label, unit,
-		oAdd=function(o, e, i){
+		addIndex=function(o, e, i){
+			if(Array.isArray(o)){
+				o=o.concat(e);
+			}else{
+				for(var p in e){
+					o[p] = e[p] + i;
+				}
+			}
+			return o;
+		},
+	  addLabelAndUnit=function(o, e, i){
 			if(Array.isArray(o)){
 				o=o.concat(e);
 			}else{
@@ -71,9 +81,9 @@ export default function join(arrobj, options){
 			label=cat.label;
 			unit=cat.unit;
 		}else{
-			index=oAdd(index, cat.index, i);
-			label=oAdd(label, cat.label, i);
-			unit=oAdd(unit, cat.unit, i);
+			index=addIndex(index, cat.index, Object.keys(index).length);
+			label=addLabelAndUnit(label, cat.label, i);
+			unit=addLabelAndUnit(unit, cat.unit, i);
 		}
 		input=input.concat( tbl.slice(1) ); //or .push.apply
 	});
