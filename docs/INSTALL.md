@@ -11,12 +11,12 @@
 <strong>jsonstat-suite</strong> is built on top of <strong>jsonstat-toolkit</strong>. Copy the latest version of the [jsonstat-toolkit code](https://raw.githubusercontent.com/jsonstat/toolkit/master/iife.js) and the latest version of the [jsonstat-suite code](https://raw.githubusercontent.com/jsonstat/suite/master/iife.js) to your server and use script tags in your webpage to link to them. Both are also available from several CDNs ([unpkg](https://unpkg.com), [jsDelivr](https://www.jsdelivr.com/)):
 
 ```html
-<script src="https://unpkg.com/jsonstat-toolkit@1.2.7"></script>
+<script src="https://unpkg.com/jsonstat-toolkit@1.3.0"></script>
 <script src="https://unpkg.com/jsonstat-suite@3.1.6"></script>
 ```
 
 ```html
-<script src="https://cdn.jsdelivr.net/combine/npm/jsonstat-toolkit@1.2.7,npm/jsonstat-suite@3.1.6"></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/jsonstat-toolkit@1.3.0,npm/jsonstat-suite@3.1.6"></script>
 ```
 
 The Suite works on any modern browser. The oldest browser supported is Internet Explorer 9.
@@ -62,6 +62,6 @@ import * as JSONstatUtils from "jsonstat-suite";
 The safest way to load the jsonstat-toolkit in [Observable](https://observablehq.com/) is:
 
 ```js
-JSONstat = require('jsonstat-toolkit@1.2.7').catch(() => window["JSONstat"])
+JSONstat = require('jsonstat-toolkit@1.3.0').catch(() => window["JSONstat"])
 JSONstatUtils = import('jsonstat-suite@3.1.6/import.mjs')
 ```
