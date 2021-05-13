@@ -20,7 +20,7 @@ console.log( ds.class ); //"dataset"
 
 ### sdmx (object): required
 
-It must be an object in the SDMX-JSON format. Objects with more than one dataset are not supported. Intermediate grouping ("time series", "cross-section") is not supported, either. Only SDMX-JSON with a flat list of observations (*dimensionAtObservation=allDimensions*) is supported. This is sometimes referred to as the **SDMX-JSON flat format flavor**.
+It must be an object in the SDMX-JSON format. Objects with more than one dataset are not supported. Only SDMX-JSON with a flat list of observations without any grouping (*dimensionAtObservation=allDimensions*) is fully supported. Support for intermediate grouping of observations (*series*) is experimental. 
 
 ### options (object)
 

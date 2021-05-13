@@ -76,11 +76,8 @@ export default function datalist(jsonstat, options){
 
 		trows=(counter) ?
 			function(r,i){
-				tbody+="<tr>";
-				thead+="<tr>";
-
 				if(i){
-					tbody+='<td class="'+numclass+'">'+i+'</td>';
+					tbody+='<tr><td class="'+numclass+'">'+i+'</td>';
 				}else{
 					thead+='<th class="'+numclass+'">#</th>';
 				}
@@ -88,17 +85,14 @@ export default function datalist(jsonstat, options){
 				tcols(r,i);
 
 				tbody+="</tr>";
-				thead+="</tr>";
 			}
 			:
 			function(r,i){
 				tbody+="<tr>";
-				thead+="<tr>";
 
 				tcols(r,i);
 
 				tbody+="</tr>";
-				thead+="</tr>";
 			}
 	;
 
@@ -136,5 +130,5 @@ export default function datalist(jsonstat, options){
 		tfoot='<tfoot><td colspan="'+ncols+'">'+source+'</td></tfoot>';
 	}
 
-	return '<table class="'+tblclass+'"><caption>'+(options.caption || ds.label || "")+'</caption>'+'<thead>'+thead+'</thead><tbody>'+tbody+'</tbody>'+tfoot+'</table>';
+	return '<table class="'+tblclass+'"><caption>'+(options.caption || ds.label || "")+'</caption>'+'<thead><tr>'+thead+'</tr></thead><tbody>'+tbody+'</tbody>'+tfoot+'</table>';
 }

@@ -7,13 +7,14 @@ export default function fromSDMX(sdmx, options){
 		return null;
 	}
 
-	//Only support for flat format with 1 dataset
+	//Support for 1 dataset only
 	if(sdmx.dataSets.length!==1){
 		return null;
 	}
-	//Only flat flavor is supported (no series)
-	if(!sdmx.dataSets[0].hasOwnProperty("observations")){ //better to look for dataset with "action": "Information"?
-		return null;
+	//Experimental support for series
+	if(!sdmx.dataSets[0].hasOwnProperty("observations")){
+		//convert to flat flavor
+		flatten(sdmx);
 	}
 
 	if(typeof options==="undefined"){
@@ -109,7 +110,7 @@ export default function fromSDMX(sdmx, options){
 			});
 		},
 
-		self=sdmx.header.links.find(function(e){return e.rel==="request";}),
+		self=sdmx.header.links ? sdmx.header.links.find(function(e){return e.rel==="request";}) : null,
 		statusPos=attr.findIndex(function(e){return e.id==="OBS_STATUS";})
 	;
 
@@ -133,7 +134,6 @@ export default function fromSDMX(sdmx, options){
 
 	//Void dataset
 	var
-		value=new Array(length),
 		stat={
 			version: "2.0",
 			class: "dataset",
@@ -143,7 +143,7 @@ export default function fromSDMX(sdmx, options){
 			id: id,
 			size: size,
 			dimension: dimension,
-			value: options.ovalue ? {} : value.fill(null)
+			value: options.ovalue ? {} : new Array(length).fill(null)
 		}
 	;
 
@@ -171,7 +171,7 @@ export default function fromSDMX(sdmx, options){
 
 	//Keep status labels in extension (Eurostat-like)
 	if(statusPos!==-1){
-		stat.status=options.ostatus ? {} : [];
+		stat.status=options.ostatus ? {} : new Array(length).fill(null);
 		stat.extension={ status: { label: {} } };
 		statusId.forEach(function(e){
 			stat.extension.status.label[e.id]=e.name;
@@ -204,20 +204,34 @@ export default function fromSDMX(sdmx, options){
 		assignStatus();
 	}
 
-	/*3.1.5
-	//When array, padding with nulls if last values/status not set
-	var k;
-	if(!options.ovalue){
-		for( k=size.reduce(function(a, b){ return a * b;})-stat.value.length; k--; ){
-			stat.value.push(null);
-		}
-	}
-	if(!options.ostatus && stat.hasOwnProperty("status")){
-		for( k=size.reduce(function(a, b){ return a * b;})-stat.status.length; k--; ){
-			stat.status.push(null);
-		}
-	}
-	*/
-
 	return options.instance ? JSONstat(stat) : stat;
 }
+
+function flatten(sdmx){
+	var
+	  ds=sdmx.dataSets[0],
+	  series=ds.series,
+	  meta=sdmx.structure,
+	  dims=meta.dimensions,
+  
+	  observations={}
+	;
+  
+	Object.keys(series).forEach((item)=>{
+	  var obs=series[item].observations;
+	  Object.keys(obs).forEach(o=>{
+		//obs index at the end
+		observations[item+":"+o]=obs[o].concat(series[item].attributes);
+	  });
+	});
+  
+	ds.observations=observations;
+	delete ds.series;
+  
+	//series+obs instead of obs+series because obs index is added at the end
+	dims.observation=dims.series.concat(dims.observation);
+	delete dims.series;
+  
+	meta.attributes.observation=meta.attributes.observation.concat(meta.attributes.series);
+	delete meta.attributes.series;
+  }  
