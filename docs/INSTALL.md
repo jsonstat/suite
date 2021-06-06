@@ -68,5 +68,5 @@ import { toCSV, fromCSV, fromSDMX as SDMX } from "@jsonstat/suite"
 Or import all the functions of a particular version:
 
 ```js
-JSONstatUtils = import('jsonstat-suite@3.2.0/import.mjs')
+JSONstatUtils = import("jsonstat-suite@3.2.0/import.mjs")
 ```
