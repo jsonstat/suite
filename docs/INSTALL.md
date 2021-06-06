@@ -59,9 +59,14 @@ import * as JSONstatUtils from "jsonstat-suite";
 
 ## Observable
 
-The safest way to load the jsonstat-toolkit in [Observable](https://observablehq.com/) is:
+To use the jsonstat-suite in [Observable](https://observablehq.com/) simply import the functions you need from @jsonstat/euro. For example, to use toCSV, fromCSV and fromSDMX (renamed as SDMX):
 
 ```js
-JSONstat = require('jsonstat-toolkit@1.3.1').catch(() => window["JSONstat"])
+import { toCSV, fromCSV, fromSDMX as SDMX } from "@jsonstat/suite"
+```
+
+Or import all the functions of a particular version:
+
+```js
 JSONstatUtils = import('jsonstat-suite@3.2.0/import.mjs')
 ```
