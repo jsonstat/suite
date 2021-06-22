@@ -15,7 +15,6 @@ export default function toCSV(jsonstat, options){
 	}
 
 	var
-		header="jsonstat",
 		rich=(options.rich===true), //2.3.0 Default: false (backward compat)
 
 		//The following options are ignored when rich
@@ -38,7 +37,8 @@ export default function toCSV(jsonstat, options){
 		dsid=options.dsid || 0,
 		ds=dataset(jsonstat, dsid),
 
-		csv=array ? [] : "" //experimental
+		csv=array ? [] : "", //experimental
+		header=array ? ["jsonstat"] : "jsonstat" //experimental
 	;
 
 	if(!checkds(ds)){
@@ -90,10 +90,19 @@ export default function toCSV(jsonstat, options){
 	});
 
 	if(rich){
-		header+=delimiter+decimal+delimiter+separator+"\n";
+		if(array){
+			header.push(delimiter+decimal+delimiter+separator); //experimental
+		}else{
+			header+=delimiter+decimal+delimiter+separator+"\n";
+		}
+
 		["label", "source", "updated", "href"].forEach(function(s){
 			if(ds[s]){
-				header+=s+delimiter+dcomma(ds[s],delimiter)+"\n";
+				if(array){
+					header.push(s+delimiter+dcomma(ds[s],delimiter)); //experimental
+				}else{
+					header+=s+delimiter+dcomma(ds[s],delimiter)+"\n";
+				}
 			}
 		});
 
@@ -103,10 +112,11 @@ export default function toCSV(jsonstat, options){
 				unit=[],
 				dim=ds.Dimension(i),
 				role=dim.role,
-				hasUnit=false
+				hasUnit=false,
+				str=""
 			;
 
-			header+="dimension"+delimiter+dcomma(e,delimiter)+delimiter+dcomma(dim.label,delimiter)+delimiter+dim.length;
+			str+="dimension"+delimiter+dcomma(e,delimiter)+delimiter+dcomma(dim.label,delimiter)+delimiter+dim.length;
 
 			if(role==="metric" && dim.__tree__.category.unit){
 				hasUnit=true;
@@ -118,7 +128,7 @@ export default function toCSV(jsonstat, options){
 					u=[],
 					cat=dim.Category(i)
 				;
-				header+=delimiter+dcomma(e,delimiter)+delimiter+dcomma(cat.label,delimiter);
+				str+=delimiter+dcomma(e,delimiter)+delimiter+dcomma(cat.label,delimiter);
 				if(hasUnit){
 					u.push(
 						cat.unit.hasOwnProperty("decimals") ? cat.unit.decimals : ""
@@ -133,13 +143,17 @@ export default function toCSV(jsonstat, options){
 			});
 
 			if(role!==null && role!=="classification"){
-				header+=delimiter+dim.role;
+				str+=delimiter+dim.role;
 				if(hasUnit){
-					header+=delimiter+unit.join(delimiter);
+					str+=delimiter+unit.join(delimiter);
 				}
 			}
 
-			header+="\n";
+			if(array){
+				header.push(str);
+			}else{
+				header+=str+"\n";
+			}
 		});
 
 		if(array){
