@@ -32,13 +32,30 @@ export default function toCSV(jsonstat, options){
 			:
 			(options.decimal || "."),
 
-		array=(options.array===true), //experimental
+		array=(options.array===true),
 
 		dsid=options.dsid || 0,
 		ds=dataset(jsonstat, dsid),
 
-		csv=array ? [] : "", //experimental
-		header=array ? ["jsonstat"] : "jsonstat" //experimental
+		csv=array ? [] : "",
+		header=array ? ["jsonstat"] : "jsonstat",
+
+		CSVline=array ?
+			function(s){
+				csv.push(s);
+			}
+			:
+			function(s){
+				csv+=s+"\n";
+			},
+		HEADline=array ?
+			function(s){
+				header.push(s);
+			}
+			:
+			function(s){
+				header+=s+"\n";
+			}
 	;
 
 	if(!checkds(ds)){
@@ -82,27 +99,15 @@ export default function toCSV(jsonstat, options){
 			}
 		});
 
-		if(array){
-			csv.push(r.join(delimiter)); //experimental
-		}else{
-			csv+=r.join(delimiter)+"\n";
-		}
+		CSVline(r.join(delimiter));
 	});
 
 	if(rich){
-		if(array){
-			header.push(delimiter+decimal+delimiter+separator); //experimental
-		}else{
-			header+=delimiter+decimal+delimiter+separator+"\n";
-		}
+		HEADline(delimiter+decimal+delimiter+separator);
 
 		["label", "source", "updated", "href"].forEach(function(s){
 			if(ds[s]){
-				if(array){
-					header.push(s+delimiter+dcomma(ds[s],delimiter)); //experimental
-				}else{
-					header+=s+delimiter+dcomma(ds[s],delimiter)+"\n";
-				}
+				HEADline(s+delimiter+dcomma(ds[s],delimiter));
 			}
 		});
 
@@ -149,15 +154,11 @@ export default function toCSV(jsonstat, options){
 				}
 			}
 
-			if(array){
-				header.push(str);
-			}else{
-				header+=str+"\n";
-			}
+			HEADline(str);
 		});
 
 		if(array){
-			csv=header.concat(["data"], csv); //experimental
+			csv=header.concat(["data"], csv);
 		}else{
 			csv=header+"data\n"+csv;
 		}
