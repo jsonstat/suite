@@ -38,7 +38,7 @@ export default function toCSV(jsonstat, options){
 		ds=dataset(jsonstat, dsid),
 
 		csv=array ? [] : "",
-		header=array ? ["jsonstat"] : "jsonstat",
+		header=array ? [] : "",
 
 		CSVline=array ?
 			function(s){
@@ -103,7 +103,7 @@ export default function toCSV(jsonstat, options){
 	});
 
 	if(rich){
-		HEADline(delimiter+decimal+delimiter+separator);
+		HEADline("jsonstat"+delimiter+decimal+delimiter+separator);
 
 		["label", "source", "updated", "href"].forEach(function(s){
 			if(ds[s]){
