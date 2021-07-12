@@ -213,25 +213,25 @@ function flatten(sdmx){
 	  series=ds.series,
 	  meta=sdmx.structure,
 	  dims=meta.dimensions,
-  
+
 	  observations={}
 	;
-  
-	Object.keys(series).forEach((item)=>{
+
+	Object.keys(series).forEach(function(item){
 	  var obs=series[item].observations;
-	  Object.keys(obs).forEach(o=>{
-		//obs index at the end
-		observations[item+":"+o]=obs[o].concat(series[item].attributes);
+	  Object.keys(obs).forEach(function(o){
+			//obs index at the end
+			observations[item+":"+o]=obs[o].concat(series[item].attributes);
 	  });
 	});
-  
+
 	ds.observations=observations;
 	delete ds.series;
-  
+
 	//series+obs instead of obs+series because obs index is added at the end
 	dims.observation=dims.series.concat(dims.observation);
 	delete dims.series;
-  
+
 	meta.attributes.observation=meta.attributes.observation.concat(meta.attributes.series);
 	delete meta.attributes.series;
-  }  
+  }
