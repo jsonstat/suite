@@ -3,7 +3,18 @@ import JSONstat from "jsonstat-toolkit";
 //SDMX-JSON flat flavor
 //Options (ovalue, ostatus, instance). IE support requires polyfills for reduce, find and findIndex
 export default function fromSDMX(sdmx, options){
-	if(typeof sdmx!=="object" || !sdmx.hasOwnProperty("dataSets") || !Array.isArray(sdmx.dataSets)){
+	if(typeof sdmx!=="object"){
+		return null;
+	}
+
+	//SDMX-JSON v.2.0.0. Convert to v.1
+	if(sdmx.hasOwnProperty("data") && sdmx.hasOwnProperty("meta") && sdmx.data.hasOwnProperty("dataSets") && sdmx.data.hasOwnProperty("structures") && Array.isArray(sdmx.data.structures)){
+		sdmx.dataSets=sdmx.data.dataSets;
+		sdmx.structure=sdmx.data.structures[0];
+		sdmx.header=sdmx.meta;
+	}
+
+	if(!sdmx.hasOwnProperty("dataSets") || !Array.isArray(sdmx.dataSets)){
 		return null;
 	}
 
@@ -45,8 +56,8 @@ export default function fromSDMX(sdmx, options){
 	if(!dim.hasOwnProperty("observation")){
 		return null;
 	}
-	//series not null or empty {}?
-	if(dim.hasOwnProperty("series") && (dim.series!==null || Object.keys(dim.series).length) ){
+	//series not null nor empty {} nor empty []?
+	if(dim.hasOwnProperty("series") && Object.keys(dim.series).length){
 		return null;
 	}
 
