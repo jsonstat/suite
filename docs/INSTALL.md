@@ -11,12 +11,12 @@
 <strong>jsonstat-suite</strong> is built on top of <strong>jsonstat-toolkit</strong>. Copy the latest version of the [jsonstat-toolkit code](https://raw.githubusercontent.com/jsonstat/toolkit/master/iife.js) and the latest version of the [jsonstat-suite code](https://raw.githubusercontent.com/jsonstat/suite/master/iife.js) to your server and use script tags in your webpage to link to them. Both are also available from several CDNs ([unpkg](https://unpkg.com), [jsDelivr](https://www.jsdelivr.com/)):
 
 ```html
-<script src="https://unpkg.com/jsonstat-toolkit@1.3.2"></script>
+<script src="https://unpkg.com/jsonstat-toolkit@1.4.1"></script>
 <script src="https://unpkg.com/jsonstat-suite@3.2.4"></script>
 ```
 
 ```html
-<script src="https://cdn.jsdelivr.net/combine/npm/jsonstat-toolkit@1.3.2,npm/jsonstat-suite@3.2.4"></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/jsonstat-toolkit@1.4.1,npm/jsonstat-suite@3.2.4"></script>
 ```
 
 The Suite works on any modern browser.
