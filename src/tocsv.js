@@ -3,7 +3,7 @@ import checkds from "./checkds.js";
 import dcomma from "./dcomma.js";
 
 
-//jsonstat, {rich, dsid, delimiter, decimal, na, [ignored if rich: vlabel, slabel, status], [ignored if not rich: separator]}
+//jsonstat, {rich, dsid, delimiter, decimal, na, field, content, [ignored if rich: vlabel, slabel, status], [ignored if not rich: separator]}
 //Returns text (CSV or JSV[JSON-stat Comma Separed values or "CSV-stat" -Rich CSV-])
 export default function toCSV(jsonstat, options){
 	if(typeof jsonstat==="undefined"){
@@ -16,6 +16,10 @@ export default function toCSV(jsonstat, options){
 
 	var
 		rich=(options.rich===true), //2.3.0 Default: false (backward compat)
+
+		//3.3.0
+		content=options.content || "label",
+		field=options.field || "label",
 
 		//The following options are ignored when rich
 		//When rich, toTable uses field=id and vlabel/slabel are ignored
@@ -72,12 +76,12 @@ export default function toCSV(jsonstat, options){
 			vlabel: vlabel,
 			slabel: slabel,
 			status: status,
-			field: rich ? "id" : "label",
-			content: rich ? "id" : "label",
+			field: rich ? "id" : field, //3.3.0
+			content: rich ? "id" : content, //3.3.0
 			type: "array"
 		}),
-		vcol=table[0].indexOf(vlabel),
-		scol=status ? table[0].indexOf(slabel) : -1
+		vcol=table[0].indexOf(field==="id" ? "value" : vlabel), //3.3.0
+		scol=status ? table[0].indexOf(field==="id" ? "status" : slabel) : -1 //3.3.0
 	;
 
 	table.forEach(function(r, j){
