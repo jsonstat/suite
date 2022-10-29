@@ -12,11 +12,11 @@
 
 ```html
 <script src="https://unpkg.com/jsonstat-toolkit@1.4.2"></script>
-<script src="https://unpkg.com/jsonstat-suite@3.2.5"></script>
+<script src="https://unpkg.com/jsonstat-suite@3.3.0"></script>
 ```
 
 ```html
-<script src="https://cdn.jsdelivr.net/combine/npm/jsonstat-toolkit@1.4.2,npm/jsonstat-suite@3.2.5"></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/jsonstat-toolkit@1.4.2,npm/jsonstat-suite@3.3.0"></script>
 ```
 
 The Suite works on any modern browser.
@@ -27,13 +27,13 @@ Very modern browsers support ECMAScript modules. Copy the latest version of the 
 
 ```html
 <script type="module">
-import * as JSONstatUtils from "https://cdn.jsdelivr.net/npm/jsonstat-suite@3.2.5/import.mjs";
+import * as JSONstatUtils from "https://cdn.jsdelivr.net/npm/jsonstat-suite@3.3.0/import.mjs";
 </script>
 ```
 
 ```html
 <script type="module">
-import * as JSONstatUtils from "https://unpkg.com/jsonstat-suite@3.2.5/import.mjs";
+import * as JSONstatUtils from "https://unpkg.com/jsonstat-suite@3.0.0/import.mjs";
 </script>
 ```
 
@@ -68,5 +68,5 @@ import { toCSV, fromCSV, fromSDMX as SDMX } from "@jsonstat/suite"
 Or import all the functions of a particular version:
 
 ```js
-JSONstatUtils = import("jsonstat-suite@3.2.5/import.mjs")
+JSONstatUtils = import("jsonstat-suite@3.0.0/import.mjs")
 ```
