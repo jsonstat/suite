@@ -68,6 +68,14 @@ It is the name of the value column. By default, "Value".
 
 It is the name of the status column when **status** is *true*. By default, "Status".
 
+#### content (string: "label", "id")
+
+Default value is "label". It determines whether categories are identified by label or by ID in the CSV file.
+
+#### field (string: "label", "id")
+
+Default value is "label". It determines whether dimensions, value and status are identified by label or by ID in the CSV file.
+
 #### na (string)
 
 It is the string that will be used when a value is not available. By default, "n/a".
@@ -88,7 +96,7 @@ It is used to select a dataset when the JSON-stat input is of class "collection"
 
 It is used to set the CSV flavor. See the [Return Value section](#return-value). By default, *false*.
 
-When **rich** is *true*, **vlabel**, **slabel** and **status** are ignored.
+When **rich** is *true*, **vlabel**, **slabel**, **status**, **field** and **content** are ignored.
 
 #### separator (string)
 
