@@ -6,13 +6,13 @@ String.prototype.capitalize=function() {
 };
 
 function objectify(ds, id, arr){
-	var o={ filter: {} };
+	var o={ filters: {} };
 
 	arr.forEach(function(e){
 		if("rows"===e.name || "cols"===e.name){
 			o[e.name]=e.value;
 		}else{
-			o.filter[e.name]=e.value;
+			o.filters[e.name]=e.value;
 		}
 	});
 
@@ -21,11 +21,11 @@ function objectify(ds, id, arr){
 		ds.id.forEach(function(e,i){
 			if(e!==o.rows && e!==o.cols){
 				//Assign only new filters (keep selected values in existing filters)
-				if(typeof o.filter[ e ]==="undefined"){
-					o.filter[ e ]=ds.Dimension(i).id[0];
+				if(typeof o.filters[ e ]==="undefined"){
+					o.filters[ e ]=ds.Dimension(i).id[0];
 				}
 			}else{
-				delete o.filter[ e ];
+				delete o.filters[ e ];
 			}
 		});
 	}
@@ -35,8 +35,18 @@ function objectify(ds, id, arr){
 
 // Build a default setup
 function setup(ds, preset){
+
+	//3.4.0 If not string it's assumed it's an object with filters, rows and cols 
+	if(typeof preset==="object"){
+		//It's the developer's responsability to pass this info correctly. Constants dimensions not required
+		//If non-sense is requested, non-sense will be returned
+		return {
+			rows: preset.rows, cols: preset.cols, filters: preset.filters
+		};
+	}
+
 	var
-		filter={}, arr=[], rows, cols,
+		filters={}, arr=[], rows, cols,
 		ids=ds.id
 	;
 
@@ -70,17 +80,17 @@ function setup(ds, preset){
 	}
 
 	//Swap rows<->cols if needed
-	if( ds.Dimension(rows).length<ds.Dimension(cols).length ){
+	if(ds.Dimension(rows).length<ds.Dimension(cols).length ){
 		rows=cols+(cols=rows, ""); //http://jsperf.com/swap-array-vs-variable/33
 	}
 
 	ids.forEach(function(e){
 		if(e!==rows && e!==cols){
-			filter[e]=ds.Dimension(e).id[0];
+			filters[e]=ds.Dimension(e).id[0];
 		}
 	});
 
-	return { rows: rows, cols: cols, filter: filter };
+	return { rows: rows, cols: cols, filters: filters };
 }
 
 function pairs(el){
@@ -136,11 +146,11 @@ function select(ds, name, v){
 		if(id.length===2){
 			return (ds.Dimension(v[0]).label || v[0]).capitalize();
 		}
-	}else{ //Filter select
+	}else{ //filters select
 		var dim=ds.Dimension(name);
 		id=dim.id;
 		arr=dim.Category();
-		//More than one dim is needed to display a category select (filter)
+		//More than one dim is needed to display a category select (filters)
 		if(id.length===1){
 			return; //Constant dimensions have their own fieldset
 		}
@@ -197,6 +207,11 @@ export default function tbrowser(jsonstat, selector, options){
 
 
 	function HTMLtable(element, ds, o, tblclass){
+		//3.4.0 Expose table setup
+		if(typeof options.callback==="function"){
+			options.callback(o);
+		}
+
 		var
 			head="",
 			foot="",
@@ -213,8 +228,8 @@ export default function tbrowser(jsonstat, selector, options){
 			dec=function(cat){
 				return (cat.hasOwnProperty("unit") && cat.unit && cat.unit.hasOwnProperty("decimals")) ? cat.unit.decimals : null;
 			},
-			filter=o.filter,
-			cell=JSON.parse(JSON.stringify(filter)), //clone filter
+			filters=o.filters,
+			cell=JSON.parse(JSON.stringify(filters)), //clone filters
 			constants=[],
 			filtfield="",
 			constfield="",
@@ -231,14 +246,14 @@ export default function tbrowser(jsonstat, selector, options){
 		//Caption
 		caption+="<caption>"+title+'<form>';
 
-		for(var name in filter){
+		for(var name in filters){
 			var
 				dim=ds.Dimension(name),
 				label=(dim.label) ? dim.label.capitalize() : name.capitalize()
 			;
 
 			if(dim.length>1){
-				filtfield+="<p>"+select(ds, name, [filter[name], null])+" <strong>"+label+"</strong>"+"</p>";
+				filtfield+="<p>"+select(ds, name, [filters[name], null])+" <strong>"+label+"</strong>"+"</p>";
 			}else{
 				constants.push({label: label, value: labelize(dim, dim.Category(0)), name: name, id: dim.id[0]});
 			}

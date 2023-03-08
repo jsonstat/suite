@@ -1,6 +1,6 @@
 {
 	"name": "jsonstat-suite",
-	"version": "3.3.0",
+	"version": "3.4.0",
 	"description": "A library of high level functions built on top of the JSON-stat Javascript Toolkit (JJT)",
 	"homepage": "https://jsonstat.com",
 	"keywords": [
@@ -39,11 +39,11 @@
 		"jsonstat-toolkit": "^1.4.2"
 	},
 	"devDependencies": {
-		"@rollup/plugin-json": "^4.0.0",
-		"@rollup/plugin-node-resolve": "^11.2.0",
-		"@rollup/plugin-replace": "^2.2.1",
-		"rollup": "^1.27.1",
-		"rollup-plugin-terser": "^5.1.2"
+		"@rollup/plugin-json": "^6.0.0",
+		"@rollup/plugin-node-resolve": "^15.0.1",
+		"@rollup/plugin-replace": "^5.0.2",
+		"rollup": "^3.18.0",
+		"@rollup/plugin-terser": "^0.4.0"
 	},
 	"license": "Apache-2.0",
 	"files": [

@@ -3,7 +3,7 @@ import checkds from "./checkds.js";
 import dcomma from "./dcomma.js";
 
 
-//jsonstat, {rich, dsid, delimiter, decimal, na, field, content, [ignored if rich: vlabel, slabel, status], [ignored if not rich: separator]}
+//jsonstat, {rich, dsid, delimiter, decimal, na, field, content ("id", "label" and since 3.4.0 "[id] label"), [ignored if rich: vlabel, slabel, status, field, content], [ignored if not rich: separator]}
 //Returns text (CSV or JSV[JSON-stat Comma Separed values or "CSV-stat" -Rich CSV-])
 export default function toCSV(jsonstat, options){
 	if(typeof jsonstat==="undefined"){
@@ -15,6 +15,7 @@ export default function toCSV(jsonstat, options){
 	}
 
 	var
+		idlabel=false, //3.4.0
 		rich=(options.rich===true), //2.3.0 Default: false (backward compat)
 
 		//3.3.0
@@ -69,6 +70,11 @@ export default function toCSV(jsonstat, options){
 	//If rich, include status if available
 	if(rich){
 		status=(ds.status!==null);
+	}else{//3.4.0
+		if(content==="[id] label"){
+			idlabel=true;
+			content="id";
+		}	
 	}
 
 	var
@@ -77,7 +83,7 @@ export default function toCSV(jsonstat, options){
 			slabel: slabel,
 			status: status,
 			field: rich ? "id" : field, //3.3.0
-			content: rich ? "id" : content, //3.3.0
+			content: rich || idlabel ? "id" : content, //3.3.0
 			type: "array"
 		}),
 		vcol=table[0].indexOf(field==="id" ? "value" : vlabel), //3.3.0
@@ -86,8 +92,13 @@ export default function toCSV(jsonstat, options){
 
 	table.forEach(function(r, j){
 		r.forEach(function(c, i){
+			var 
+				dim=ds.Dimension(i),
+				label
+			;
+
 			if(j && i===vcol){
-				if( c===null ){
+				if(c===null){
 					r[i]=dcomma(na,delimiter);
 				}else{
 					if(decimal!=="."){
@@ -98,7 +109,13 @@ export default function toCSV(jsonstat, options){
 				if(j && i===scol && c===null){
 					r[i]=""; //Status does not use n/a because usually lacking of status means "normal".
 				}else{
-					r[i]=dcomma(r[i],delimiter);
+					if(idlabel && j){
+						label=dim.Category(r[i]).label;
+						//if(r[i]!==label){
+							r[i]="[" + r[i] + "] " + label;
+						//}
+					}
+					r[i]=dcomma(r[i], delimiter);
 				}
 			}
 		});

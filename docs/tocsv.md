@@ -68,9 +68,9 @@ It is the name of the value column. By default, "Value".
 
 It is the name of the status column when **status** is *true*. By default, "Status".
 
-#### content (string: "label", "id")
+#### content (string: "label", "id", "[id] label")
 
-Default value is "label". It determines whether categories are identified by label or by ID in the CSV file.
+Default value is "label". It determines whether categories in the CSV file are identified by label, ID or both in the form "[id] label" (example: "[DE] Germany").
 
 #### field (string: "label", "id")
 

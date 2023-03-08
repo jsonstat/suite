@@ -89,6 +89,20 @@ If **preset** is "bigger", the two dimensions with the highest number of categor
 
 Currently, any other string will be interpreted as "smaller": the two dimensions with the lowest number of categories will be selected.
 
+**preset** also accepts an object specifying the dimensions that must be shown in columns and rows and the dimensions and categories that must be used as filters. For example,
+
+```js
+{
+  rows: "geo", 
+  cols: "time", 
+  filters: {
+    "sex": "F"
+  }
+}
+```
+
+All dimensions must appear in **preset** except constant dimensions, which are not required. It is the developer's responsability to pass this information correctly. The inconsistency of it will probably break the application.
+
 #### nonconst (boolean)
 
 When *true*, dimensions with a single category are removed from the dataset and are used in the caption of the table (instead of the dataset label), not in the Constants section. Default is *false*.
@@ -127,6 +141,23 @@ An object with several texts used in the table. Properties and default values ar
 #### dsid (positive integer or string)
 
 It is used to select a dataset when the JSON-stat input is of class "collection" or "bundle". When a positive integer is specified, it is interpreted as an index. By default, it is 0 (first dataset).  When a string is specified, it is the id of the selected dataset.
+
+#### callback (function)
+
+When specified, this function will be executed with the table's setup as an argument every time the table is modified. The table setup is an object with three properties:
+
+```js
+{
+  rows: "geo", 
+  cols: "time", 
+  filters: {
+    "sex": "F",
+    "age": "15-64"
+  }
+}
+```
+
+In this object, constant dimensions may or may not appear.
 
 ### Return Value
 

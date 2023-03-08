@@ -1,10 +1,11 @@
 import json from '@rollup/plugin-json';
 import replace from '@rollup/plugin-replace';
-import {terser} from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 import resolve from '@rollup/plugin-node-resolve';
-import * as pkg from "./package.json";
+import { readFileSync } from "fs";
 
 const
+  pkg = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8")),
   globals={ "jsonstat-toolkit": "JSONstat" },
   external=["jsonstat-toolkit"],
   preamble=`// ${pkg.name} v${pkg.version} Copyright ${(new Date).getFullYear()} ${pkg.author.name} ${pkg.homepage}`,
