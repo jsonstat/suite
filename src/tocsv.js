@@ -15,7 +15,7 @@ export default function toCSV(jsonstat, options){
 	}
 
 	var
-		idlabel=false, //3.4.0
+		idlabel={ content: false, field: false }, //3.4.1
 		rich=(options.rich===true), //2.3.0 Default: false (backward compat)
 
 		//3.3.0
@@ -72,9 +72,13 @@ export default function toCSV(jsonstat, options){
 		status=(ds.status!==null);
 	}else{//3.4.0
 		if(content==="[id] label"){
-			idlabel=true;
+			idlabel.content=true;
 			content="id";
-		}	
+		}
+		if(field==="[id] label"){
+			idlabel.field=true;
+			field="id";
+		}
 	}
 
 	var
@@ -82,8 +86,8 @@ export default function toCSV(jsonstat, options){
 			vlabel: vlabel,
 			slabel: slabel,
 			status: status,
-			field: rich ? "id" : field, //3.3.0
-			content: rich || idlabel ? "id" : content, //3.3.0
+			field: rich || idlabel.field ? "id" : field, //3.3.0
+			content: rich || idlabel.content ? "id" : content, //3.3.0
 			type: "array"
 		}),
 		vcol=table[0].indexOf(field==="id" ? "value" : vlabel), //3.3.0
@@ -92,10 +96,7 @@ export default function toCSV(jsonstat, options){
 
 	table.forEach(function(r, j){
 		r.forEach(function(c, i){
-			var 
-				dim=ds.Dimension(i),
-				label
-			;
+			var dim=ds.Dimension(i);
 
 			if(j && i===vcol){
 				if(c===null){
@@ -109,12 +110,20 @@ export default function toCSV(jsonstat, options){
 				if(j && i===scol && c===null){
 					r[i]=""; //Status does not use n/a because usually lacking of status means "normal".
 				}else{
-					if(idlabel && j){
-						label=dim.Category(r[i]).label;
-						//if(r[i]!==label){
-							r[i]="[" + r[i] + "] " + label;
+					if(idlabel.content && j && dim){
+						//if(r[i]!==dim.Category(r[i]).label){
+						r[i]="[" + r[i] + "] " + dim.Category(r[i]).label;
 						//}
+					}else{
+						if(idlabel.field && j===0){
+							if(dim){
+								r[i]="[" + r[i] + "] " + dim.label;
+							}else{
+								r[i]=(r[i]==="value") ? vlabel : slabel;
+							}
+						}						
 					}
+
 					r[i]=dcomma(r[i], delimiter);
 				}
 			}

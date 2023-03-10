@@ -72,9 +72,9 @@ It is the name of the status column when **status** is *true*. By default, "Stat
 
 Default value is "label". It determines whether categories in the CSV file are identified by label, ID or both in the form "[id] label" (example: "[DE] Germany").
 
-#### field (string: "label", "id")
+#### field (string: "label", "id", "[id] label")
 
-Default value is "label". It determines whether dimensions, value and status are identified by label or by ID in the CSV file.
+Default value is "label". It determines whether dimensions, value and status are identified by label or by ID in the CSV file. When "[id] label" is specified, dimensions will use both (example, "[AGE] age group") and value and status will use **vlabel** and **slabel**.
 
 #### na (string)
 
