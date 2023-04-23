@@ -110,7 +110,7 @@ When a valid dimension ID is provided in the **by** property, the resulting CSV 
 
 #### drop (array)
 
-When a valid dimension ID is provided in the **by** property, ***drop*** can be used to provide a list of dimension IDs to remove from the resulting CSV.
+When a valid dimension ID is provided in the **by** property, ***drop*** can be used to provide a list of constant dimension IDs to remove from the resulting CSV.
 
 ### Return Value
 
