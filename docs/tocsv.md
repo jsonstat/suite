@@ -96,11 +96,21 @@ It is used to select a dataset when the JSON-stat input is of class "collection"
 
 It is used to set the CSV flavor. See the [Return Value section](#return-value). By default, *false*.
 
-When **rich** is *true*, **vlabel**, **slabel**, **status**, **field** and **content** are ignored.
+When **rich** is *true*, **vlabel**, **slabel**, **status**, **field**, **content**, **by** and **drop** are ignored.
 
 #### separator (string)
 
 It is the character that will be used as the unit fields (number of decimals, unit label, symbol, symbol position) separator. It must be different from **delimiter** and cannot be a character present in the unit fields. When **rich** is *false*, it is ignored. By default, "|".
+
+#### by (string)
+
+When a valid dimension ID is provided in the **by** property, the resulting CSV is transposed by that dimension and the value column is replaced by as many columns as categories in the specified dimension.
+
+**status**, **vlabel** and **slabel** are ignored when a valid dimension ID is provided in the **by** property. When **rich** is *true*, **by** is ignored.
+
+#### drop (array)
+
+When a valid dimension ID is provided in the **by** property, ***drop*** can be used to provide a list of dimension IDs to remove from the resulting CSV.
 
 ### Return Value
 

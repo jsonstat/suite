@@ -2,8 +2,71 @@ import dataset from "./dataset.js";
 import checkds from "./checkds.js";
 import dcomma from "./dcomma.js";
 
+//{drop, na, delimiter, decimal, content, field, by, idlabel}
+function transposed(ds, o){
+	function getHead(cols, delimiter, field, ds, by){
+		return cols.map(e=>{
+			if(field==="label"){
+				if(ds.id.indexOf(e)!==-1){
+					return dcomma(
+						(idlabel.field ? "[" + e + "] " : "") + ds.Dimension(e).label, delimiter
+					);
+				}else{
+					return dcomma(
+						(idlabel.field ? "[" + e + "] " : "") + ds.Dimension(by).Category(e).label, delimiter
+					);
+				}
+			}else{
+				return dcomma(e,delimiter);
+			}
+		}).join(delimiter)+"\n";
+	}
 
-//jsonstat, {rich, dsid, delimiter, decimal, na, field, content ("id", "label" and since 3.4.0 "[id] label"), [ignored if rich: vlabel, slabel, status, field, content], [ignored if not rich: separator]}
+	const 
+		data=[],
+		by=o.by,
+		idlabel=o.idlabel,
+		drop=o.drop, 
+		na=o.na, 
+		delimiter=o.delimiter, 
+		decimal=o.decimal, 
+		content=idlabel.content ? "id" : o.content, 
+		field=idlabel.field ? "label" : o.field,
+		transp=ds.toTable({drop: drop, content: content, by: by, type: "arrobj"}),
+		cols=Object.keys(transp[0]),
+		headline=getHead(cols, delimiter, field, ds, by),
+		getCell=(decimal!==".") ?
+			function(v){
+				return v===null ? dcomma(na,delimiter) : String(v).replace(".", decimal);
+			}
+			:
+			function(v){
+				return v===null ? dcomma(na,delimiter) : v;
+			}
+	;
+
+	transp.forEach(row => {
+		let r=[];
+
+		cols.forEach(col => {
+			const 
+				rc=row[col],
+				cell=(typeof rc==="string") ?
+					dcomma((idlabel.content ? "[" + rc + "] " + ds.Dimension(col).Category(rc).label : rc), delimiter)
+					:
+					getCell(rc)
+			;
+
+			r.push(cell);
+		});
+		data.push(r.join(delimiter));
+	});
+
+	return headline+data.join("\n");
+}
+
+
+//jsonstat, {array, rich, dsid, delimiter, decimal, na, field, content ("id", "label" and since 3.4.0 "[id] label"), by, drop [ignored if rich: by, vlabel, slabel, status, field, content], [ignored if not rich: separator] [ignored if no valid by: drop] [ignored if valid by: status, vlabel, slabel]}
 //Returns text (CSV or JSV[JSON-stat Comma Separed values or "CSV-stat" -Rich CSV-])
 export default function toCSV(jsonstat, options){
 	if(typeof jsonstat==="undefined"){
@@ -79,6 +142,15 @@ export default function toCSV(jsonstat, options){
 			idlabel.field=true;
 			field="id";
 		}
+	}
+
+	var
+		by=(!rich && options.by && ds.id.indexOf(options.by)!==-1) ? options.by : null,
+		drop=by && typeof options.drop!=="undefined" && Array.isArray(options.drop) ? options.drop : null
+	;
+
+	if(by){
+		return transposed(ds, {drop, na, delimiter, decimal, content, field, by, idlabel});
 	}
 
 	var

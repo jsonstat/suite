@@ -1,6 +1,6 @@
 {
 	"name": "jsonstat-suite",
-	"version": "3.4.1",
+	"version": "3.5.0",
 	"description": "A library of high level functions built on top of the JSON-stat Javascript Toolkit (JJT)",
 	"homepage": "https://jsonstat.com",
 	"keywords": [
