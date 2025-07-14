@@ -1,8 +1,8 @@
 # Installation
 
-> [JSON-stat Javascript Utilities Suite v.3](https://github.com/jsonstat/suite/blob/master/README.md) ▸ **Installation**
+> [JSON-stat JavaScript Utilities Suite v.3](https://github.com/jsonstat/suite/blob/master/README.md) ▸ **Installation**
 
-<blockquote>This is the documentation of the JSON-stat Javascript Utilities Suite version 3. Version 2 has slightly different installation procedures that are documented <a href="https://www.npmjs.com/package/jsonstat-utils">elsewhere</a>.</blockquote>
+<blockquote>This is the documentation of the JSON-stat JavaScript Utilities Suite version 3. Version 2 has slightly different installation procedures that are documented <a href="https://www.npmjs.com/package/jsonstat-utils">elsewhere</a>.</blockquote>
 
 ## Browser
 
