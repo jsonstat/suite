@@ -3,7 +3,8 @@ export default function checkds(ds){
 		return false;
 	}
 
-	for(var i=ds.length, len=1; i--;){
+	let len=1;
+	for(let i=ds.length; i--;){
 		len*=ds.Dimension(i).length;
 	}
 	if(len!==ds.n){

@@ -1,7 +1,7 @@
 var
   JSONstatUtils=require("../main.cjs"),
   https=require("https"),
-  url="https://stats.oecd.org/SDMX-JSON/data/LFS_SEXAGE_I_R/DNK+FIN+NOR.MW.900000.UR.A/all?startTime=2010&dimensionAtObservation=allDimensions",
+  url="https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_PRICES@DF_PRICES_ALL,1.0/.M.N.CPI.._T.N.GY+_Z?startPeriod=2025-02&dimensionAtObservation=AllDimensions&format=jsondata",
   main=function(sdmx){
       var
         ds=JSONstatUtils.fromSDMX(sdmx, {instance: true}),

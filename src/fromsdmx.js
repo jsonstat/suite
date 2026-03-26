@@ -46,7 +46,7 @@ export default function fromSDMX(sdmx, options){
 		}
 	}
 
-	var
+	const
 		meta=sdmx.structure,
 		data=sdmx.dataSets[0].observations, //assuming one dataset and flat flavor
 		attr=meta.attributes.observation,
@@ -61,27 +61,29 @@ export default function fromSDMX(sdmx, options){
 		return null;
 	}
 
-	//find, findIndex, reduce for IE
-	__IE__
-
-	var
+	let
 		length=1,
+		statusId=[],
+		assignStatus=function(){}, //void unless there's status info
+		statusPos=attr.findIndex(function(e){return e.id==="OBS_STATUS";})
+	;
+
+	const
 		id=[],
 		size=[],
 		dimension={},
-		statusId=[],
 		role={ time: [], geo: [] /*, metric: [] no metric so far*/ },
-		assignStatus=function(){}, //void unless there's status info
 
 		getValueIndex=function(jsonstat, indices){
-			var size=jsonstat.size;
+			const size=jsonstat.size;
 
 			//If metadata at the dataSet level, indices.length<size.length: difference must be filled with 0
-			for( var j=size.length-indices.length; j--; ){
+			for( let j=size.length-indices.length; j--; ){
 				indices.push(0);
 			}
 
-			for( var i=0, ndims=size.length, num=0, mult=1; i<ndims; i++ ){
+			let num=0, mult=1;
+			for( let i=0, ndims=size.length; i<ndims; i++ ){
 				mult*=( i>0 ) ? size[ndims-i] : 1;
 				num+=mult*indices[ndims-i-1];
 			}
@@ -109,7 +111,7 @@ export default function fromSDMX(sdmx, options){
 			size.push(o.values.length);
 			length*=o.values.length;
 
-			var cat=dimension[o.id].category;
+			const cat=dimension[o.id].category;
 			o.values.forEach(function(v){
 				cat.index.push(v.id);
 
@@ -121,8 +123,7 @@ export default function fromSDMX(sdmx, options){
 			});
 		},
 
-		self=sdmx.header.links ? sdmx.header.links.find(function(e){return e.rel==="request";}) : null,
-		statusPos=attr.findIndex(function(e){return e.id==="OBS_STATUS";})
+		self=sdmx.header.links ? sdmx.header.links.find(function(e){return e.rel==="request";}) : null
 	;
 
 	if(statusPos!==-1){
@@ -144,19 +145,17 @@ export default function fromSDMX(sdmx, options){
 	}
 
 	//Void dataset
-	var
-		stat={
-			version: "2.0",
-			class: "dataset",
-			updated: sdmx.header.prepared || null, //Not exactly the same thing... but publicationYear and publicationPeriod usually missing
-			source: sdmx.header.sender.name || null, //Not exactly the same thing...
-			label: meta.name || null,
-			id: id,
-			size: size,
-			dimension: dimension,
-			value: options.ovalue ? {} : new Array(length).fill(null)
-		}
-	;
+	const stat={
+		version: "2.0",
+		class: "dataset",
+		updated: sdmx.header.prepared || null, //Not exactly the same thing... but publicationYear and publicationPeriod usually missing
+		source: sdmx.header.sender.name || null, //Not exactly the same thing...
+		label: meta.name || null,
+		id: id,
+		size: size,
+		dimension: dimension,
+		value: options.ovalue ? {} : new Array(length).fill(null)
+	};
 
 	if(self){
 		stat.link={
@@ -189,15 +188,15 @@ export default function fromSDMX(sdmx, options){
 		});
 
 		assignStatus=(options.ostatus) ?
-			function(){
-				var statusVal=data[ndx][statusPos];
+			function(ndx, posArr){
+				const statusVal=data[ndx][statusPos];
 				if(statusVal!==null){
 					stat.status[ getValueIndex(stat, posArr) ] = statusId[ statusVal ].id;
 				}
 			}
 			:
-			function(){
-				var statusVal=data[ndx][statusPos];
+			function(ndx, posArr){
+				const statusVal=data[ndx][statusPos];
 				stat.status[ getValueIndex(stat, posArr) ] = statusVal===null ? null : statusId[ statusVal ].id;
 			}
 		;
@@ -205,21 +204,21 @@ export default function fromSDMX(sdmx, options){
 
 	//Data+Status
 	statusPos++; //index 1 instead of 0 because obs array has value in pos 0.
-	for(var ndx in data){
-		var posArr=ndx.split(":");
+	for(let ndx in data){
+		const posArr=ndx.split(":");
 
 		if(!options.ovalue || data[ndx][0]!==null){
 			stat.value[ getValueIndex(stat, posArr) ] = data[ndx][0];
 		}
 
-		assignStatus();
+		assignStatus(ndx, posArr);
 	}
 
 	return options.instance ? JSONstat(stat) : stat;
 }
 
 function flatten(sdmx){
-	var
+	const
 	  ds=sdmx.dataSets[0],
 	  series=ds.series,
 	  meta=sdmx.structure,
@@ -229,7 +228,7 @@ function flatten(sdmx){
 	;
 
 	Object.keys(series).forEach(function(item){
-	  var obs=series[item].observations;
+	  const obs=series[item].observations;
 	  Object.keys(obs).forEach(function(o){
 			//obs index at the end
 			observations[item+":"+o]=obs[o].concat(series[item].attributes);

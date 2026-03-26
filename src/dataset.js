@@ -21,5 +21,10 @@ export default function dataset(j, dsid){
 		return null;
 	}
 
+	//Accept metadata-only datasets (if no data, create an empty array)
+	if(j.value===null){
+		j.value = Array(j.n).fill(null);
+	}
+
 	return (j.class==="dataset") ? j : j.Dataset(dsid);
 }

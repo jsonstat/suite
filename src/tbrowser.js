@@ -6,7 +6,7 @@ String.prototype.capitalize=function() {
 };
 
 function objectify(ds, id, arr){
-	var o={ filters: {} };
+	const o={ filters: {} };
 
 	arr.forEach(function(e){
 		if("rows"===e.name || "cols"===e.name){
@@ -45,13 +45,16 @@ function setup(ds, preset){
 		};
 	}
 
-	var
-		filters={}, arr=[], rows, cols,
+	const
+		filters={},
+		arr=[],
 		ids=ds.id
 	;
 
+	let rows, cols;
+
 	if(preset){
-		var order=(preset==="bigger") ?
+		const order=(preset==="bigger") ?
 			function(a,b){
 				if(a.len < b.len){
 					return 1;
@@ -94,7 +97,7 @@ function setup(ds, preset){
 }
 
 function pairs(el){
-	var
+	const
 		arr=[],
 		selects=[].slice.call(el.querySelectorAll("select, input"))
 	;
@@ -106,9 +109,9 @@ function pairs(el){
 }
 
 function labelize(dim, cat, name){
-	var
+	const
 		ulabel=function(d, c){//2.3.0 Support for symbol
-			var lab, symb, ret="";
+			let lab, symb, ret="";
 			if(d && d.role==="metric" && c.unit){
 				lab=c.unit.hasOwnProperty("label") ? c.unit.label : "";
 				symb=c.unit.hasOwnProperty("symbol") ? c.unit.symbol : "";
@@ -132,10 +135,11 @@ function labelize(dim, cat, name){
 }
 
 function select(ds, name, v){
-	var
+	let
 		html='<select name="'+name+'">',
 		arr=[],
-		id
+		id,
+		dim
 	;
 
 	if( v[1]!==null ){ //row/col select
@@ -147,7 +151,7 @@ function select(ds, name, v){
 			return (ds.Dimension(v[0]).label || v[0]).capitalize();
 		}
 	}else{ //filters select
-		var dim=ds.Dimension(name);
+		dim=ds.Dimension(name);
 		id=dim.id;
 		arr=dim.Category();
 		//More than one dim is needed to display a category select (filters)
@@ -157,7 +161,7 @@ function select(ds, name, v){
 	}
 
 	id.forEach(function(e, i){
-		var selected=(e!==v[0]) ? '' : 'selected="selected" ';
+		const selected=(e!==v[0]) ? '' : 'selected="selected" ';
 
 		//If null is a filter select: all options must be included
 		if(v[1]===null || e!==v[1]) {
@@ -171,14 +175,14 @@ function select(ds, name, v){
 }
 
 function killconst(ds){
-	var
-		del=0,
+	let del=0;
+	const
 		size=ds.size.slice(0),
 		killed=[]
 	;
 
 	size.forEach(function(e,i){
-		var
+		const
 			pos=i-del,
 			dim=ds.Dimension(pos)
 		;
@@ -212,11 +216,18 @@ export default function tbrowser(jsonstat, selector, options){
 			options.callback(o);
 		}
 
-		var
+		let
 			head="",
 			foot="",
 			caption="",
 			body="",
+			filtfield="",
+			constfield="",
+			title=(ds.label!==null) ? '<span class="label">'+ds.label.capitalize()+'</span>' : '',
+			source=(ds.source) ? msgs.source+": "+ds.source : ""
+		;
+
+		const
 			r=o.rows,
 			rows=ds.Dimension(r),
 			rid=rows.id,
@@ -230,11 +241,7 @@ export default function tbrowser(jsonstat, selector, options){
 			},
 			filters=o.filters,
 			cell=JSON.parse(JSON.stringify(filters)), //clone filters
-			constants=[],
-			filtfield="",
-			constfield="",
-			source=(ds.source) ? msgs.source+": "+ds.source : "",
-			title=(ds.label!==null) ? '<span class="label">'+ds.label.capitalize()+'</span>' : ''
+			constants=[]
 		;
 
 		if(nonconst && removed.length){
@@ -246,8 +253,8 @@ export default function tbrowser(jsonstat, selector, options){
 		//Caption
 		caption+="<caption>"+title+'<form>';
 
-		for(var name in filters){
-			var
+		for(const name in filters){
+			const
 				dim=ds.Dimension(name),
 				label=(dim.label) ? dim.label.capitalize() : name.capitalize()
 			;
@@ -277,7 +284,7 @@ export default function tbrowser(jsonstat, selector, options){
 		body+="<tbody>";
 
 		//If no decimal information, analyze all data for every metric and infer decimals? Not for the moment.
-		var format=(Number.toLocaleString && locale!=="none") ?
+		const format=(Number.toLocaleString && locale!=="none") ?
 			function(v, d){
 				//toLocaleString because has better support than new Intl.NumberFormat(locale, { minimumFractionDigits: d }).format(v)
 				return (d===null) ?
@@ -296,17 +303,16 @@ export default function tbrowser(jsonstat, selector, options){
 
 		rid.forEach(function(e){
 			cell[r]=e;
-			var
+			const
 				data=ds.Data(cell),
 				td=function(col, i){
-					var
-						val,
-						decimals=(c!==metricname) ?
-							//Metric is not in cols or no metric at all
-							( (metric===null) ? null : dec( metric.Category( cell[metricname] ) ) )
-							:
-							//Metric dimension in columns
-							dec( cols.Category(i) )
+					let val;
+					const decimals=(c!==metricname) ?
+						//Metric is not in cols or no metric at all
+						( (metric===null) ? null : dec( metric.Category( cell[metricname] ) ) )
+						:
+						//Metric dimension in columns
+						dec( cols.Category(i) )
 					;
 
 					//fromSDMX can return undefined (not anymore since 3.1.5)
@@ -398,7 +404,7 @@ export default function tbrowser(jsonstat, selector, options){
 		options={};
 	}
 
-	var
+	const
 		msgs=(typeof options.i18n==="undefined" || typeof options.i18n.msgs==="undefined") ?
 			{
 				"urierror": 'tbrowser: A valid JSON-stat input must be specified.',
@@ -421,15 +427,16 @@ export default function tbrowser(jsonstat, selector, options){
 		nonconst=options.nonconst || false //2.10.0
 	;
 
-	var ds=dataset(jsonstat, dsid);
+	const ds=dataset(jsonstat, dsid);
 	if(!checkds(ds)){
 		msg("jsonerror");
 		return;
 	}
 
 	//Remove constant dimensions
+	let removed;
 	if(nonconst){
-		var removed=killconst(ds);
+		removed=killconst(ds);
 	}
 
 	if(ds.length===1){

@@ -2,7 +2,7 @@ import JSONstat from "jsonstat-toolkit";
 
 //o object p property
 function arr2obj(o,p){
-	var ret={};
+	const ret={};
 
 	if(Array.isArray(o[p])){
 		o[p].forEach(function(e,i){
@@ -36,10 +36,10 @@ export default function fromTable(tbl, options){
 		options.instance=false;
 	}
 
-	var
+	const
 		vlabel=options.vlabel || "Value",
 		slabel=options.slabel || "Status",
-		type=options.type || "array", //default is array as in .toTable()
+		type=options.type || "array", //default is array as in .Transform()
 		label=options.label || "",
 		header=options.header || null, //internal option for rich CSV (CSV-stat) v. 2.3.3
 
@@ -50,35 +50,37 @@ export default function fromTable(tbl, options){
 		odims={},
 		dimension={},
 		getPos=function(e,size){
-			var
+			let
 				mult=1,
 				res=0
 			;
-			for(var i=0; i<dims; i++){
+			for(let i=0; i<dims; i++){
 				mult*=(i>0) ? size[(dims-i)] : 1;
 				res+=mult*e[dims-i-1];
 			}
 			return res;
-		},
-		valuestatus=function(){
-			var v=tbl[dd][vlabel];
-			value[getPos(pos, size)]=( isNaN(v) ) ? null : v;
 		}
 	;
+
+	let valuestatus=function(dd, pos){
+		const v=tbl[dd][vlabel];
+		value[getPos(pos, size)]=( isNaN(v) ) ? null : v;
+	};
 
 	//Convert to "arrobj". Not efficient but simple.
 	switch(type){
 		case "array":
 			//From array to arrobj
 			tbl=(function(tbl){
-				var
+				const
 					head=tbl[0],
 					arr=tbl.slice(1)
 				;
 
-				var arrobj=[];
-				for(var d=0, dlen=arr.length; d<dlen; d++){
-					for(var f=0, flen=head.length, o={}; f<flen; f++){
+				const arrobj=[];
+				for(let d=0, dlen=arr.length; d<dlen; d++){
+					let o={};
+					for(let f=0, flen=head.length; f<flen; f++){
 						o[head[f]]=arr[d][f];
 					}
 					arrobj.push(o);
@@ -90,15 +92,16 @@ export default function fromTable(tbl, options){
 		case "object":
 			//From object to arrobj
 			tbl=(function(tbl){
-				var
+				const
 					head=tbl.cols.map(function(e) {return e.id;}),
 					//Pending: retrieve labels
 					arr=tbl.rows
 				;
 
-				var arrobj=[];
-				for(var d=0, dlen=arr.length; d<dlen; d++){
-					for(var f=0, flen=head.length, o={}; f<flen; f++){
+				const arrobj=[];
+				for(let d=0, dlen=arr.length; d<dlen; d++){
+					let o={};
+					for(let f=0, flen=head.length; f<flen; f++){
 						o[head[f]]=arr[d].c[f].v;
 					}
 					arrobj.push(o);
@@ -108,10 +111,8 @@ export default function fromTable(tbl, options){
 		break;
 	}
 
-	var
-		hdim,
-		obs=tbl.length
-	;
+	let hdim;
+	const obs=tbl.length;
 
 	if(options.hasOwnProperty("drop") && Array.isArray(options.drop) && options.drop.length){
 		tbl.forEach(function(row){
@@ -122,7 +123,7 @@ export default function fromTable(tbl, options){
 	}
 
 	//Dimensions are taken from first observation
-	for(var field in tbl[0]){
+	for(const field in tbl[0]){
 		if(field!==vlabel){
 			if(field!==slabel){
 				id.push(field);
@@ -133,8 +134,8 @@ export default function fromTable(tbl, options){
 					odims[field]=hdim.category.index;
 				}else{
 					odims[field]=[];
-					for(var j=0; j<obs; j++){
-						var e=tbl[j][field];
+					for(let j=0; j<obs; j++){
+						const e=tbl[j][field];
 
 						if(odims[field].indexOf(e)===-1){
 							odims[field].push(e);
@@ -157,8 +158,8 @@ export default function fromTable(tbl, options){
 					}
 				}
 			}else{ //status field is present
-				valuestatus=function(){
-					var
+				valuestatus=function(dd, pos){
+					const
 						v=tbl[dd][vlabel],
 						s=tbl[dd][slabel]
 					;
@@ -169,15 +170,15 @@ export default function fromTable(tbl, options){
 		}
 	}
 
-	var dims=id.length;
+	const dims=id.length;
 
-	for(var dd=0; dd<obs; dd++){
-		var pos=[];
-		for(var i=0; i<dims; i++){
-			var d=id[i];
+	for(let dd=0; dd<obs; dd++){
+		const pos=[];
+		for(let i=0; i<dims; i++){
+			const d=id[i];
 			pos.push( odims[d].indexOf(tbl[dd][d]) );
 		}
-		valuestatus();
+		valuestatus(dd, pos);
 	}
 
 	/* For JSON-stat<2.00
@@ -185,7 +186,7 @@ export default function fromTable(tbl, options){
 	dimension.size=size;
 	*/
 
-	var ret={
+	const ret={
 		"version": "2.0",
 		"class": "dataset",
 		"value": value,

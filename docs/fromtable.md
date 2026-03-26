@@ -1,6 +1,6 @@
 # fromTable
 
-> Converts an array with tabular data to the JSON-stat dataset format. This function performs the opposite conversion of the [toTable method](https://github.com/jsonstat/toolkit/blob/master/docs/API.md#totable).
+> Converts an array with tabular data to the JSON-stat dataset format. This function performs the opposite conversion of the [Transform method](https://github.com/jsonstat/toolkit/blob/master/docs/API.md#transform).
 
 **<code><i>object</i> JSONstatUtils.fromTable ( <i>array</i> tbl [, <i>object</i> options] )
 </code>**
@@ -34,7 +34,7 @@ window.alert( ds.Data( {"Sex": "Total"} ).value ); //Total population (35,851,77
 
 ### tbl (array): required
 
-It must be an array in one of the types supported by the [return values of the toTable method](https://github.com/jsonstat/toolkit/blob/master/docs/API.md#return-value-6): "array" or "arrobj" (support for "object" is experimental).
+It must be an array in one of the types supported by the [return values of the Transform method](https://github.com/jsonstat/toolkit/blob/master/docs/API.md#return-value-7): "array" or "arrobj" (support for "object" is experimental).
 
 By default, an array of arrays with no status column is expected. Use **type**, **vlabel** and **slabel** options when this is not the case.
 
@@ -42,7 +42,7 @@ By default, an array of arrays with no status column is expected. Use **type**, 
 
 #### type (string)
 
-It describes the structure of the table. See the [return values of the toTable method](https://github.com/jsonstat/toolkit/blob/master/docs/API.md#return-value-6). Supported structures are "array" and "arrobj". By default, "array".
+It describes the structure of the table. See the [return values of the Transform method](https://github.com/jsonstat/toolkit/blob/master/docs/API.md#return-value-7). Supported structures are "array" and "arrobj". By default, "array".
 
 #### vlabel (string)
 

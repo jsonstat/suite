@@ -32,7 +32,7 @@ function transposed(ds, o){
 		decimal=o.decimal, 
 		content=idlabel.content ? "id" : o.content, 
 		field=idlabel.field ? "label" : o.field,
-		transp=ds.toTable({drop: drop, content: content, by: by, type: "arrobj"}),
+		transp=ds.Transform({drop, content, by, type: "arrobj"}),
 		cols=Object.keys(transp[0]),
 		headline=getHead(cols, delimiter, field, ds, by),
 		getCell=(decimal!==".") ?
@@ -77,19 +77,9 @@ export default function toCSV(jsonstat, options){
 		options={};
 	}
 
-	var
+	const
 		idlabel={ content: false, field: false }, //3.4.1
 		rich=(options.rich===true), //2.3.0 Default: false (backward compat)
-
-		//3.3.0
-		content=options.content || "label",
-		field=options.field || "label",
-
-		//The following options are ignored when rich
-		//When rich, toTable uses field=id and vlabel/slabel are ignored
-		vlabel=rich ? "value" : (options.vlabel || "Value"), //Same default as .toTable()
-		slabel=rich ? "status" : (options.slabel || "Status"), //Same default as .toTable()
-		status=(options.status===true), //Same default as .toTable(). If rich, it will be rewritten and set according to ds content
 
 		na=options.na || "n/a",
 
@@ -105,6 +95,27 @@ export default function toCSV(jsonstat, options){
 		dsid=options.dsid || 0,
 		ds=dataset(jsonstat, dsid),
 
+		HEADline=array ?
+			function(s){
+				header.push(s);
+			}
+			:
+			function(s){
+				header+=s+"\n";
+			}
+	;
+
+	//3.3.0 — these may be mutated below
+	let
+		content=options.content || "label",
+		field=options.field || "label",
+
+		//The following options are ignored when rich
+		//When rich, Transform uses field=id and vlabel/slabel are ignored
+		vlabel=rich ? "value" : (options.vlabel || "Value"), //Same default as .Transform()
+		slabel=rich ? "status" : (options.slabel || "Status"), //Same default as .Transform()
+		status=(options.status===true), //Same default as .Transform(). If rich, it will be rewritten and set according to ds content
+
 		csv=array ? [] : "",
 		header=array ? [] : "",
 
@@ -115,14 +126,6 @@ export default function toCSV(jsonstat, options){
 			:
 			function(s){
 				csv+=s+"\n";
-			},
-		HEADline=array ?
-			function(s){
-				header.push(s);
-			}
-			:
-			function(s){
-				header+=s+"\n";
 			}
 	;
 
@@ -144,7 +147,7 @@ export default function toCSV(jsonstat, options){
 		}
 	}
 
-	var
+	const
 		by=(!rich && options.by && ds.id.indexOf(options.by)!==-1) ? options.by : null,
 		drop=by && typeof options.drop!=="undefined" && Array.isArray(options.drop) ? options.drop : null
 	;
@@ -153,8 +156,8 @@ export default function toCSV(jsonstat, options){
 		return transposed(ds, {drop, na, delimiter, decimal, content, field, by, idlabel});
 	}
 
-	var
-		table=ds.toTable({
+	const
+		table=ds.Transform({
 			vlabel: vlabel,
 			slabel: slabel,
 			status: status,
@@ -168,7 +171,7 @@ export default function toCSV(jsonstat, options){
 
 	table.forEach(function(r, j){
 		r.forEach(function(c, i){
-			var dim=ds.Dimension(i);
+			const dim=ds.Dimension(i);
 
 			if(j && i===vcol){
 				if(c===null){
@@ -193,7 +196,7 @@ export default function toCSV(jsonstat, options){
 							}else{
 								r[i]=(r[i]==="value") ? vlabel : slabel;
 							}
-						}						
+						}					
 					}
 
 					r[i]=dcomma(r[i], delimiter);
@@ -215,10 +218,12 @@ export default function toCSV(jsonstat, options){
 
 		//dimensions
 		ds.id.forEach(function(e,i){
-			var
+			const
 				unit=[],
 				dim=ds.Dimension(i),
-				role=dim.role,
+				role=dim.role
+			;
+			let
 				hasUnit=false,
 				str=""
 			;
@@ -231,7 +236,7 @@ export default function toCSV(jsonstat, options){
 
 			//categories
 			dim.id.forEach(function(e,i){
-				var
+				const
 					u=[],
 					cat=dim.Category(i)
 				;

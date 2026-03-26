@@ -7,23 +7,25 @@ function CSVToArray( strData, strDelimiter ){
 	strDelimiter = (strDelimiter || ",");
 
 	// Create a regular expression to parse the CSV values.
-	var
-		objPattern = new RegExp(
-			(
-			// Delimiters.
-			"(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
-			// Quoted fields.
-			"(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
-			// Standard fields.
-			"([^\"\\" + strDelimiter + "\\r\\n]*))"
-			),
-			"gi"
+	const objPattern = new RegExp(
+		(
+		// Delimiters.
+		"(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+		// Quoted fields.
+		"(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+		// Standard fields.
+		"([^\"\\" + strDelimiter + "\\r\\n]*))"
 		),
-		// Create an array to hold our data. Give the array
-		// a default empty first row.
-		arrData = [[]],
-		// Create an array to hold our individual pattern
-		// matching groups.
+		"gi"
+	);
+
+	// Create an array to hold our data. Give the array
+	// a default empty first row.
+	const arrData = [[]];
+
+	// Create an array to hold our individual pattern
+	// matching groups.
+	let
 		arrMatches = null,
 		strMatchedValue,
 		strMatchedDelimiter
@@ -84,28 +86,30 @@ export default function fromCSV(csv, options){
 		options={};
 	}
 
-	var
+	const
+		rich=(csv.substring(0,8)==="jsonstat"), //Rich CSV (CSV-stat)
+		role={ time: [], geo: [], metric: [] },
+		delimiter=rich ? csv.substring(8,9) : (options.delimiter || ",") //CSV column delimiter
+	;
+
+	let
 		header=[],
 		vcol=null,
 		obj=null,
 		nrows,
 		i,
 		roleExist=false,
-		role={ time: [], geo: [], metric: [] },
-		separator,
-
-		rich=(csv.substring(0,8)==="jsonstat"), //Rich CSV (CSV-stat)
 		//All options will be ignored if rich
 		vlabel=rich ? "value" : options.vlabel,
 		slabel=rich ? "status" : options.slabel,
-
-		delimiter=rich ? csv.substring(8,9) : (options.delimiter || ","), //CSV column delimiter
+		separator,
 		decimal=(delimiter===";") ?
 			(options.decimal || ",")
 			:
-			(options.decimal || "."),
-		table=CSVToArray( csv.trim(), delimiter )
+			(options.decimal || ".")
 	;
+
+	const table=CSVToArray( csv.trim(), delimiter );
 
 	if(rich){
 		decimal=table[0][1];
@@ -119,7 +123,7 @@ export default function fromCSV(csv, options){
 
 		obj={ dimension: {} };
 		header.forEach(function(e){
-			var i, label, len, dim, cat, unit, id, lab;
+			let i, label, len, dim, cat, unit, id, lab;
 			switch (e[0]) {
 				case "dimension":
 					obj.dimension[e[1]]={};
@@ -156,7 +160,7 @@ export default function fromCSV(csv, options){
 								cat.unit={};
 								//For each category extract unit info
 								cat.index.forEach(function(c,j){
-									var u=e[i+j].split(separator);
+									const u=e[i+j].split(separator);
 									cat.unit[c]={};
 									unit=cat.unit[c];
 

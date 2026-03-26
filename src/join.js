@@ -6,7 +6,7 @@ export default function join(arrobj, options){
 		return null;
 	}
 
-	var
+	const
 		arr=JSON.parse( JSON.stringify(arrobj) ), //clone
 		output=arr[0]
 	;
@@ -22,15 +22,16 @@ export default function join(arrobj, options){
 		options={};
 	}
 
-	var
+	const
 		dslabel=(typeof options.label==="undefined") ? null : options.label,
-		dimid=(typeof options.by==="undefined") ? null : options.by,
-		input=[]
+		dimid=(typeof options.by==="undefined") ? null : options.by
 	;
+
+	let input=[];
 
 	//Join metadata+data1+data2+...
 	if(dimid===null){
-		for(var i=1, len=arr.length; i<len; i++){
+		for(let i=1, len=arr.length; i<len; i++){
 			input=input.concat( arr[i].value ); //or .push.apply
 		}
 
@@ -44,13 +45,14 @@ export default function join(arrobj, options){
 	}
 
 	//Join by dimension
-	var
-		index, label, unit,
+	let index, label, unit;
+
+	const
 		addIndex=function(o, e, i){
 			if(Array.isArray(o)){
 				o=o.concat(e);
 			}else{
-				for(var p in e){
+				for(const p in e){
 					o[p] = e[p] + i;
 				}
 			}
@@ -60,7 +62,7 @@ export default function join(arrobj, options){
 			if(Array.isArray(o)){
 				o=o.concat(e);
 			}else{
-				for(var p in e){
+				for(const p in e){
 					o[p]=(e[p]===0) ? i : e[p];
 				}
 			}
@@ -69,8 +71,8 @@ export default function join(arrobj, options){
 	;
 
 	arr.forEach(function(e, i){
-		var
-			tbl=JSONstat(e).toTable({ status: true }),
+		const
+			tbl=JSONstat(e).Transform({ status: true }),
 			cat=e.dimension[dimid].category
 		;
 
@@ -88,7 +90,7 @@ export default function join(arrobj, options){
 		input=input.concat( tbl.slice(1) ); //or .push.apply
 	});
 
-	var ds=fromTable(input);
+	const ds=fromTable(input);
 
 	output.value=ds.value;
 	output.size=ds.size;
