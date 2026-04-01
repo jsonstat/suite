@@ -32,7 +32,7 @@ function transposed(ds, o){
 		decimal=o.decimal, 
 		content=idlabel.content ? "id" : o.content, 
 		field=idlabel.field ? "label" : o.field,
-		transp=ds.Transform({drop, content, by, type: "arrobj"}),
+		transp=ds.toTable({drop, content, by, type: "arrobj"}),
 		cols=Object.keys(transp[0]),
 		headline=getHead(cols, delimiter, field, ds, by),
 		getCell=(decimal!==".") ?
@@ -111,10 +111,10 @@ export default function toCSV(jsonstat, options){
 		field=options.field || "label",
 
 		//The following options are ignored when rich
-		//When rich, Transform uses field=id and vlabel/slabel are ignored
-		vlabel=rich ? "value" : (options.vlabel || "Value"), //Same default as .Transform()
-		slabel=rich ? "status" : (options.slabel || "Status"), //Same default as .Transform()
-		status=(options.status===true), //Same default as .Transform(). If rich, it will be rewritten and set according to ds content
+		//When rich, toTable uses field=id and vlabel/slabel are ignored
+		vlabel=rich ? "value" : (options.vlabel || "Value"), //Same default as .toTable()
+		slabel=rich ? "status" : (options.slabel || "Status"), //Same default as .toTable()
+		status=(options.status===true), //Same default as .toTable(). If rich, it will be rewritten and set according to ds content
 
 		csv=array ? [] : "",
 		header=array ? [] : "",
@@ -157,7 +157,7 @@ export default function toCSV(jsonstat, options){
 	}
 
 	const
-		table=ds.Transform({
+		table=ds.toTable({
 			vlabel: vlabel,
 			slabel: slabel,
 			status: status,
