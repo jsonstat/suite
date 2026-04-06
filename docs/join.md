@@ -41,4 +41,4 @@ It is the name of the dimension to be used in a join by dimension.
 
 It returns an object in the JSON-stat 2.0 dataset format. On error it returns *null*.
 
-Full example: [Dataset Join by Sex and Concept](https://jsonstat.com/examples/5c788a54b4145d2b4c04dc718112af5d), [Dataset Join by Concept](https://jsonstat.com/examples/a1fb2b272a1f4a0bba9c041a4cf09078)
+Full example: [Dataset Join by Sex and Concept](https://jsonstat.com/examples/5c788a54b4145d2b4c04dc718112af5d), [Dataset Join by Concept](https://jsonstat.com/examples/a1fb2b272a1f4a0bba9c041a4cf09078), [Sequential Dataset Join](https://jsonstat.com/examples/7245dccd2b8ea8a023c5c374a3fe0fe5)
