@@ -163,4 +163,4 @@ In this object, constant dimensions may or may not appear.
 
 Void.
 
-Full examples: [An OECD Table](https://jsonstat.com/examples/6c22ab5d2f16d611bf30f30f6c24e0c5), [Dataset Join by Sex and Concept](https://jsonstat.com/examples/5c788a54b4145d2b4c04dc718112af5d), [Dataset Join by Concept](https://jsonstat.com/examples/a1fb2b272a1f4a0bba9c041a4cf09078)
+Full examples: [An OECD Table](https://jsonstat.com/examples/6c22ab5d2f16d611bf30f30f6c24e0c5), [Dataset Join by Sex and Concept](https://jsonstat.com/examples/5c788a54b4145d2b4c04dc718112af5d), [Dataset Join by Concept](https://jsonstat.com/examples/a1fb2b272a1f4a0bba9c041a4cf09078), [Sequential Dataset Join](https://jsonstat.com/examples/7245dccd2b8ea8a023c5c374a3fe0fe5)
