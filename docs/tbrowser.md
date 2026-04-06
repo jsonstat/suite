@@ -162,3 +162,5 @@ In this object, constant dimensions may or may not appear.
 ### Return Value
 
 Void.
+
+Full examples: [Dataset Join by Sex and Concept](https://jsonstat.com/examples/5c788a54b4145d2b4c04dc718112af5d), [An OECD Table](https://gist.github.com/badosa/6c22ab5d2f16d611bf30f30f6c24e0c5)
