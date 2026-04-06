@@ -40,3 +40,5 @@ It is the name of the dimension to be used in a join by dimension.
 ### Return Value
 
 It returns an object in the JSON-stat 2.0 dataset format. On error it returns *null*.
+
+Full example: [Dataset Join by Sex and Concept](https://jsonstat.com/examples/5c788a54b4145d2b4c04dc718112af5d)
