@@ -44,4 +44,4 @@ When *true*, the return value of *fromSDMX* is not a JSON-stat object but a *jso
 
 When **instance** is not specified or *false*, it returns an object in the JSON-stat format of class "dataset" that can be processed with [jsonstat-toolkit](https://www.npmjs.com/package/jsonstat-toolkit) to produce a *jsonstat* instance. When **instance** is *true*, it returns a *jsonstat* instance. On error it returns *null*.
 
-Full examples: [Inflation in Australia](https://jsonstat.com/examples/3f96870faec97cd4002a8923c986ce3b), [An OECD Table](https://gist.github.com/badosa/6c22ab5d2f16d611bf30f30f6c24e0c5)
+Full examples: [Inflation in Australia](https://jsonstat.com/examples/3f96870faec97cd4002a8923c986ce3b), [An OECD Table](https://jsonstat.com/examples/6c22ab5d2f16d611bf30f30f6c24e0c5)
