@@ -117,3 +117,5 @@ When a valid dimension ID is provided in the **by** property, ***drop*** can be 
 It returns a string in the CSV format. When **rich** is *true*, it returns a rich CSV string in the [JSON-stat Comma-Separated Values format](https://github.com/badosa/CSV-stat) (CSV-stat, or JSV for short). CSV-stat is CSV plus a metadata header. CSV-stat supports all the JSON-stat dataset core semantics. This means that CSV-stat can be converted back to JSON-stat (using [fromCSV](fromcsv.md)) without loss of information (only the *note*, *link*, *child*, *coordinates* and *extension* properties are not currently supported).
 
 On error it returns *null*.
+
+Full example: [From JSON-stat to CSV](https://jsonstat.com/examples/b9346d408136f8a5c18a)
