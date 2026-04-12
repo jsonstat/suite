@@ -79,3 +79,5 @@ When *true*, the return value of *fromTable* is not a JSON-stat object but a *js
 ### Return Value
 
 When **instance** is not specified or *false*, it returns an object in the JSON-stat format of class "dataset" that can be processed with [jsonstat-toolkit](https://www.npmjs.com/package/jsonstat-toolkit) to produce a *jsonstat* instance. When **instance** is *true*, it returns a *jsonstat* instance. On error it returns *null*.
+
+Full example: [U.S. Balance of Payment](https://jsonstat.com/examples/a5f88ca0025327a95c974517cb9aaadd)
